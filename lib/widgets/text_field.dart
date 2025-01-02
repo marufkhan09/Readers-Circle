@@ -1,6 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:readers_circle/utils/colors.dart';
-import 'package:readers_circle/utils/strings.dart';
 
 class TextInput extends StatefulWidget {
   final Function(String?) onDone;
@@ -59,7 +59,7 @@ class _TextState extends State<TextInput> {
       validator: (value) {
         if (value == null || value.isEmpty) {
           return "Can't be empty";
-        } else if (widget.hint == emailHint &&
+        } else if (widget.hint == tr("emailHint") &&
             !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                 .hasMatch(value)) {
           return "Invalid email address!";

@@ -1,0 +1,9 @@
+{
+    "mobile": "Mobile Number",
+    "promptPassword": "Pin Number",
+    "actionSignIn": "Login to your account",
+    "signIn": "Login",
+    "loginSubTitle": "Please provide your email & password to login",
+    "forgotPassword": "Forgot password?",
+    "emailHint": "Email address"
+}

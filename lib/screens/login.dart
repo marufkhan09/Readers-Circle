@@ -1,10 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:readers_circle/api/helpers/response_status.dart';
 import 'package:readers_circle/providers/login_provider.dart';
 import 'package:readers_circle/utils/colors.dart';
-import 'package:readers_circle/utils/strings.dart';
 import 'package:readers_circle/widgets/buton.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -39,21 +39,21 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(signIn,
+                Text("signIn",
                     style: TextStyle(
                         fontSize: 28,
                         color: CustomColors.black,
                         fontFamily: GoogleFonts.ibmPlexSans().fontFamily,
-                        fontWeight: FontWeight.bold)),
+                        fontWeight: FontWeight.bold)).tr(),
 
                 const SizedBox(
                   height: 10,
                 ),
-                Text(loginSubTitle,
+                Text("loginSubTitle",
                     style: TextStyle(
                       fontSize: 14,
                       fontFamily: GoogleFonts.ibmPlexSans().fontFamily,
-                    )),
+                    )).tr(),
 
                 const SizedBox(
                   height: 50,
@@ -73,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           filled: true,
                           contentPadding:
                               const EdgeInsets.fromLTRB(15.0, 5.0, 5.0, 5.0),
-                          hintText: mobile,
+                          hintText: tr("mobile"),
                           hintStyle: TextStyle(
                               fontSize: 16.0, color: CustomColors.broder),
                           border: OutlineInputBorder(
@@ -109,7 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             filled: true,
                             contentPadding:
                                 const EdgeInsets.fromLTRB(15.0, 5.0, 5.0, 5.0),
-                            hintText: promptPassword,
+                            hintText: tr("promptPassword"),
                             hintStyle: TextStyle(
                                 fontSize: 16.0,
                                 color: CustomColors.broder,
@@ -164,12 +164,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                   color: Colors.white,
                                 )
                               : Text(
-                                  signIn,
+                                  "signIn",
                                   style: TextStyle(
                                       fontSize: 16,
                                       color: CustomColors.white,
                                       fontWeight: FontWeight.bold),
-                                )),
+                                ).tr()),
                     );
                   },
                 )
@@ -247,11 +247,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       child: Padding(
                           padding: const EdgeInsets.all(0.0),
-                          child: Text(forgotPassword,
+                          child: Text("forgotPassword",
                               style: TextStyle(
                                   decoration: TextDecoration.underline,
                                   fontSize: 14,
-                                  color: CustomColors.black))),
+                                  color: CustomColors.black)).tr()),
                     ),
                   ],
                 ),

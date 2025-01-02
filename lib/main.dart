@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:readers_circle/providers/login_provider.dart';
@@ -9,8 +10,17 @@ import 'package:readers_circle/utils/theme.dart';
 import 'package:readers_circle/utils/routeNames.dart';
 
 final MyRouteObserver routeObserver = MyRouteObserver();
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+  runApp(EasyLocalization(
+    saveLocale: true,
+    supportedLocales: const [Locale('en'), Locale('bn')],
+    startLocale: const Locale("en"),
+    fallbackLocale: const Locale("en"),
+    path: 'assets/translations',
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -27,6 +37,9 @@ class MyApp extends StatelessWidget {
         navigatorObservers: [routeObserver],
         navigatorKey: GlobalVariableKeys.navigatorState,
         debugShowCheckedModeBanner: false,
+        locale: context.locale,
+        supportedLocales: context.supportedLocales,
+        localizationsDelegates: context.localizationDelegates,
         theme: readersTheme(Brightness.light),
         initialRoute: Routes.splash,
         routes: routes,
