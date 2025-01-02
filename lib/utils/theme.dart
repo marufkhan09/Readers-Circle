@@ -2,57 +2,73 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:readers_circle/utils/colors.dart';
 
+
+
 ThemeData readersTheme(Brightness brightness) {
   var baseTheme = ThemeData(
     useMaterial3: true,
-    colorScheme: ColorScheme.light(
-      primary: CustomColors.primary, // Set primary color
-      onPrimary: Colors.white, // Text color on primary color
-      surfaceTint: CustomColors.white,
-    ),
+    colorScheme: brightness == Brightness.dark
+        ? const ColorScheme.dark(
+            primary: CustomColors.primary,
+            onPrimary: CustomColors.onPrimary,
+            secondary: CustomColors.secondary,
+            background: CustomColors.primary,
+            surface: CustomColors.primary,
+          )
+        : const ColorScheme.light(
+            primary: CustomColors.primary,
+            onPrimary: CustomColors.onPrimary,
+            secondary: CustomColors.secondary,
+            background: CustomColors.white,
+            surface: CustomColors.white,
+          ),
     brightness: brightness,
     scaffoldBackgroundColor: CustomColors.white,
-    textSelectionTheme: TextSelectionThemeData(
+    textSelectionTheme: const TextSelectionThemeData(
       cursorColor: CustomColors.primary,
       selectionColor: CustomColors.primary,
       selectionHandleColor: CustomColors.primary,
     ),
   );
 
-  // Apply Poppins font using Google Fonts
+  // Apply Google Fonts (Poppins)
   final textTheme = GoogleFonts.poppinsTextTheme(baseTheme.textTheme);
 
   return baseTheme.copyWith(
     primaryColor: CustomColors.primary,
-    scaffoldBackgroundColor: CustomColors.white,
+    scaffoldBackgroundColor: brightness == Brightness.dark
+        ? CustomColors.primary
+        : CustomColors.white,
     dialogTheme: DialogTheme(
-      backgroundColor: CustomColors.white,
+      backgroundColor: brightness == Brightness.dark
+          ? CustomColors.primary
+          : CustomColors.white,
       titleTextStyle: textTheme.titleMedium!.copyWith(
-        color: Colors.black,
+        color: brightness == Brightness.dark ? Colors.white : Colors.black,
         fontWeight: FontWeight.bold,
       ),
       contentTextStyle: textTheme.bodyMedium!.copyWith(
-        color: Colors.black,
+        color: brightness == Brightness.dark ? Colors.white : Colors.black,
       ),
     ),
     appBarTheme: AppBarTheme(
-      color: CustomColors.white, // AppBar background color
+      color: CustomColors.primary,
       titleTextStyle: textTheme.titleLarge!.copyWith(
-        color: Colors.white,
+        color: CustomColors.onPrimary,
         fontWeight: FontWeight.bold,
       ),
     ),
-    progressIndicatorTheme: ProgressIndicatorThemeData(
+    progressIndicatorTheme: const ProgressIndicatorThemeData(
       color: CustomColors.primary,
     ),
-    buttonTheme: ButtonThemeData(
-      buttonColor: CustomColors.primary, // Default button color
-      textTheme: ButtonTextTheme.primary, // Text color on buttons
+    buttonTheme: const ButtonThemeData(
+      buttonColor: CustomColors.primary,
+      textTheme: ButtonTextTheme.primary,
     ),
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: CustomColors.primary,
       foregroundColor: Colors.white,
     ),
-    textTheme: textTheme, // Apply Poppins font to all text
+    textTheme: textTheme,
   );
 }

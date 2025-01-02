@@ -30,6 +30,27 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: CustomColors.grey,
+      appBar: AppBar(
+        backgroundColor: CustomColors.grey,
+        actions: [
+          TextButton(
+              onPressed: () {
+                // Toggle between en and bn
+                Locale newLocale = context.locale.languageCode == 'en'
+                    ? const Locale('bn')
+                    : const Locale('en');
+                context.setLocale(newLocale);
+              },
+              child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25),
+                      border:
+                          Border.all(width: 1, color: CustomColors.secondary)),
+                  child: const Text("ln").tr()))
+        ],
+      ),
       body: Center(
         child: SingleChildScrollView(
           child: Container(
@@ -40,11 +61,12 @@ class _LoginScreenState extends State<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("signIn",
-                    style: TextStyle(
-                        fontSize: 28,
-                        color: CustomColors.black,
-                        fontFamily: GoogleFonts.ibmPlexSans().fontFamily,
-                        fontWeight: FontWeight.bold)).tr(),
+                        style: TextStyle(
+                            fontSize: 28,
+                            color: CustomColors.black,
+                            fontFamily: GoogleFonts.ibmPlexSans().fontFamily,
+                            fontWeight: FontWeight.bold))
+                    .tr(),
 
                 const SizedBox(
                   height: 10,
@@ -248,10 +270,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: Text("forgotPassword",
-                              style: TextStyle(
-                                  decoration: TextDecoration.underline,
-                                  fontSize: 14,
-                                  color: CustomColors.black)).tr()),
+                                  style: TextStyle(
+                                      decoration: TextDecoration.underline,
+                                      fontSize: 14,
+                                      color: CustomColors.black))
+                              .tr()),
                     ),
                   ],
                 ),
