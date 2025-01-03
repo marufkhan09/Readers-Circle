@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:readers_circle/api/api_paths.dart';
 import 'package:readers_circle/api/base_api_service.dart';
 import 'package:readers_circle/api/helpers/response_status.dart';
 import 'package:readers_circle/models/book_model/book_model.dart';
@@ -70,16 +69,16 @@ class BookProvider extends BaseApiService with ChangeNotifier {
     try {
       final response = await getDio()!.get("books",queryParameters: {"for_sale": "true"});
       BookModel responseJson = BookModel.fromJson(response.data);
-      _booksForRent = responseJson;
+      _booksForSale = responseJson;
       _booksForSaleLoaded = true;
       notifyListeners();
-      return _booksForRent;
+      return _booksForSale;
     } on DioException catch (e) {
-      _booksForRent = BookModel();
+      _booksForSale = BookModel();
       debugPrint("Error: ${e.message}");
       notifyListeners();
       showMessageToast(message: "Error fetching data");
-      return _booksForRent;
+      return _booksForSale;
     }
   }
 }
