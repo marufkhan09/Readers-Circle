@@ -10,5 +10,5 @@ var routes = {
   Routes.loginScreen: (context) => const LoginScreen(),
   Routes.register: (context) => const RegisterScreen(),
   Routes.preferences: (context) => const PreferencesScreen(),
-  Routes.dashboard: (context) => const DashboardPage(),
+  Routes.dashboard: (context) => const DashboardScreen(),
 };

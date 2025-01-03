@@ -24,40 +24,40 @@ class AuthProvider extends BaseApiService with ChangeNotifier {
 
 //login
   Future<int> loginCall({
-  required String email,
-  required String password,
-}) async {
-  try {
-    // Make the API call
-    final response = await getDio()!
-        .post(loginPath, data: {'email': email, 'password': password});
+    required String email,
+    required String password,
+  }) async {
+    try {
+      // Make the API call
+      final response = await getDio()!
+          .post(loginPath, data: {'email': email, 'password': password});
 
-    // Parse the response into the LoginResponse model
-    _loginResponse = LoginResponse.fromJson(response.data);
+      // Parse the response into the LoginResponse model
+      _loginResponse = LoginResponse.fromJson(response.data);
 
-    // Save login status and response data to SharedPreferences
-    sharedPref.saveBool("isLoggedIn", true);
-    sharedPref.saveString("loginResponse", json.encode(_loginResponse.toJson()));
-    // Show a success toast message
-    showMessageToast(message: _loginResponse.message!);
+      // Save login status and response data to SharedPreferences
+      sharedPref.saveBool("isLoggedIn", true);
+      sharedPref.saveString(
+          "loginResponse", json.encode(_loginResponse.toJson()));
+      // Show a success toast message
+      showMessageToast(message: _loginResponse.message!);
 
-    // Update the status and notify listeners
-    _status = Status.success;
-    notifyListeners();
-    return response.statusCode!;
-  } on DioException catch (e) {
-    // Handle errors
-    final responseJson = json.decode(e.response.toString());
-    showMessageToast(message: responseJson["message"]);
-    _status = Status.failed;
-    notifyListeners();
-    return e.response!.statusCode!;
-  } finally {
-    // Always notify listeners at the end
-    notifyListeners();
+      // Update the status and notify listeners
+      _status = Status.success;
+      notifyListeners();
+      return response.statusCode!;
+    } on DioException catch (e) {
+      // Handle errors
+      final responseJson = json.decode(e.response.toString());
+      showMessageToast(message: responseJson["message"]);
+      _status = Status.failed;
+      notifyListeners();
+      return e.response!.statusCode!;
+    } finally {
+      // Always notify listeners at the end
+      notifyListeners();
+    }
   }
-}
-
 
   //registration
 

@@ -34,7 +34,7 @@ class CustomColors {
   // Additional shades for usage
   static const Color shade1 = Color(0xFF704B2F); // A bit lighter than primary
   static const Color shade2 = Color(0xFF4E2C18); // A bit darker than primary
-   static const Color primaryLight1 = Color(0xFF8C5A3B); // Slightly lighter
+  static const Color primaryLight1 = Color(0xFF8C5A3B); // Slightly lighter
   static const Color primaryLight2 = Color(0xFFB2826A); // Medium-light
   static const Color primaryLight3 = Color(0xFFD4AB94); // Light
   static const Color primaryLight4 = Color(0xFFF5D5C1); // Very light
