@@ -21,18 +21,22 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
   late AuthProvider provider;
 
   @override
   void initState() {
-    provider = Provider.of<AuthProvider>(context, listen: false);
+    super.initState();
+    // Remove the provider initialization from here
     _emailController.text = "masuda@gmail.com";
     _passwordController.text = "123456Ma#";
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    // Initialize the provider in the build method
+    provider = Provider.of<AuthProvider>(context, listen: false);
+
     return Scaffold(
       backgroundColor: CustomColors.grey,
       appBar: AppBar(
@@ -85,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(
                   height: 50,
                 ),
-                //Form
+                // Form
                 Form(
                   key: _formKey,
                   child: Column(
@@ -127,19 +131,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: CustomActionButton(
                       onTap: () {
                         if (_formKey.currentState!.validate()) {
-                          context
-                              .read<AuthProvider>()
+                          provider
                               .loginCall(
-                                  email: _emailController.text,
-                                  password: _passwordController.text)
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                          )
                               .then((val) {
                             if (val == 200) {
-                              if (context
-                                  .watch<AuthProvider>()
-                                  .loginResponse
-                                  .data!
-                                  .preferences!
-                                  .isEmpty) {
+                              if (provider
+                                  .loginResponse.data!.preferences!.isEmpty) {
+                                // Handle the case where preferences are empty
                               } else {
                                 Navigator.pushReplacementNamed(
                                     context, Routes.dashboard);
@@ -148,18 +149,17 @@ class _LoginScreenState extends State<LoginScreen> {
                           });
                         }
                       },
-                      child:
-                          context.watch<AuthProvider>().status == Status.loading
-                              ? const CircularProgressIndicator(
-                                  color: Colors.white,
-                                )
-                              : const Text(
-                                  "signIn",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      color: CustomColors.white,
-                                      fontWeight: FontWeight.bold),
-                                ).tr()),
+                      child: provider.status == Status.loading
+                          ? const CircularProgressIndicator(
+                              color: Colors.white,
+                            )
+                          : const Text(
+                              "signIn",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: CustomColors.white,
+                                  fontWeight: FontWeight.bold),
+                            ).tr()),
                 ),
 
                 const SizedBox(

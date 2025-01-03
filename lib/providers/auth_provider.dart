@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:readers_circle/api/api_paths.dart';
 import 'package:readers_circle/api/base_api_service.dart';
 import 'package:readers_circle/api/helpers/response_status.dart';
 import 'package:readers_circle/models/login_response/login_response.dart';
 import 'package:readers_circle/utils/shared_pref.dart';
-import 'package:readers_circle/widgets/snackbar.dart';
+import 'package:readers_circle/utils/toast.dart';
 
 class AuthProvider extends BaseApiService with ChangeNotifier {
   final SharedPref sharedPref = SharedPref();
@@ -22,23 +23,22 @@ class AuthProvider extends BaseApiService with ChangeNotifier {
   }
 
 //login
-  Future<int> loginCall({
-    required String email,
-    required String password,
-  }) async {
+  Future<int> loginCall(
+      {required String email, required String password}) async {
     try {
       final response = await getDio()!
           .post(loginPath, data: {'email': email, 'password': password});
       _loginResponse = LoginResponse.fromJson(response.data);
-      sharedPref.saveInt("preferences", _loginResponse.data!.preferences!.length);
+      sharedPref.saveInt(
+          "preferences", _loginResponse.data!.preferences!.length);
       sharedPref.saveBool("isLoggedIn", true);
-      CustomSnackBar(text: _loginResponse.message!, isError: false);
+      showMessageToast(message: _loginResponse.message!);
       _status = Status.success;
       notifyListeners();
       return response.statusCode!;
     } on DioException catch (e) {
       final responseJson = json.decode(e.response.toString());
-      CustomSnackBar(text: responseJson["message"], isError: true);
+      showMessageToast(message: responseJson["message"]);
       _status = Status.failed;
       notifyListeners();
       return e.response!.statusCode!;
@@ -61,17 +61,17 @@ class AuthProvider extends BaseApiService with ChangeNotifier {
         'last_name': lName,
         'email': email,
         'phone_number': phone,
-        'account_type': "borrower"
+        'account_type': "both"
       });
 
       final responseJson = json.decode(response.toString());
-      CustomSnackBar(text: responseJson["message"], isError: false);
+      showMessageToast(message: responseJson["message"]);
       _status = Status.success;
       notifyListeners();
       return response.statusCode!;
     } on DioException catch (e) {
       final responseJson = json.decode(e.response.toString());
-      CustomSnackBar(text: responseJson["message"], isError: true);
+      showMessageToast(message: responseJson["message"]);
       _status = Status.failed;
       notifyListeners();
       return e.response!.statusCode!;

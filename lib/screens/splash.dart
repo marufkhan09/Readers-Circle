@@ -1,9 +1,6 @@
-import 'dart:convert';
 import 'dart:async';
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:readers_circle/models/login_response/login_response.dart';
 import 'package:readers_circle/providers/auth_provider.dart';
 import 'package:readers_circle/utils/routes.dart';
 import 'package:readers_circle/utils/shared_pref.dart';
@@ -23,6 +20,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
+     sharedPref.clear();
     provider = Provider.of<AuthProvider>(context, listen: false);
     provider.checkIfLoggedin().then(
       (value) async {

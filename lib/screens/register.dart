@@ -21,6 +21,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _lastNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
+  late AuthProvider provider;
+
+  @override
+  void initState() {
+    provider = Provider.of<AuthProvider>(context, listen: false);
+    _firstNameController.text = "Maruf";
+    _lastNameController.text = "Khan";
+    _emailController.text = "maruf1609@gmail.com";
+    _phoneController.text = "01722088068";
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -33,10 +44,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   void _register() {
     if (_formKey.currentState!.validate()) {
-      // Perform registration logic
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Registration Successful')),
-      );
+      context
+          .read<AuthProvider>()
+          .registerCall(
+              fName: _firstNameController.text,
+              lName: _lastNameController.text,
+              email: _emailController.text,
+              phone: _phoneController.text)
+          .then((value) {
+        if (value == 200 || value == 201) {
+          Navigator.pushReplacementNamed(context, Routes.loginScreen);
+        }
+      });
     }
   }
 
@@ -56,7 +75,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 },
                 textInputAction: TextInputAction.done,
                 keyboardType: TextInputType.name,
-                hint: tr("firstName"),
+                hint: tr("fName"),
                 validateOnInteraction: true,
               ),
               const SizedBox(
@@ -68,7 +87,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 },
                 textInputAction: TextInputAction.done,
                 keyboardType: TextInputType.name,
-                hint: tr("lastName"),
+                hint: tr("lName"),
                 validateOnInteraction: true,
               ),
               const SizedBox(
@@ -92,60 +111,53 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 },
                 textInputAction: TextInputAction.done,
                 keyboardType: TextInputType.phone,
-                hint: tr("phoneNumber"),
+                hint: tr("phone"),
                 validateOnInteraction: true,
               ),
               const SizedBox(
                 height: 20,
               ),
-              Consumer<AuthProvider>(
-                builder: (context, provider, child) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    child: CustomActionButton(
-                        onTap: () {
-                          // if (_formKey.currentState!.validate()) {
-                          //   provider.loginCall(
-                          //       email: _emailController.text,
-                          //       password: _passwordController.text);
-                          // }
-                        },
-                        child: provider.status == Status.loading
-                            ? const CircularProgressIndicator(
-                                color: Colors.white,
-                              )
-                            : const Text(
-                                "register",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: CustomColors.white,
-                                    fontWeight: FontWeight.bold),
-                              ).tr()),
-                  );
-                },
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: CustomActionButton(
+                    onTap: () {
+                      _register();
+                    },
+                    child: provider.status == Status.loading
+                        ? const CircularProgressIndicator(
+                            color: Colors.white,
+                          )
+                        : const Text(
+                            "register",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: CustomColors.white,
+                                fontWeight: FontWeight.bold),
+                          ).tr()),
               ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      radius: 50,
-                      onTap: ()  {
-                        Navigator.pushReplacementNamed(context, Routes.loginScreen);
-                      },
-                      child: Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Text("login",
-                                  style: TextStyle(
-                                      decoration: TextDecoration.underline,
-                                      fontSize: 14,
-                                      color: CustomColors.black))
-                              .tr()),
-                    ),
-                  ],
-                ),
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    radius: 50,
+                    onTap: () {
+                      Navigator.pushReplacementNamed(
+                          context, Routes.loginScreen);
+                    },
+                    child: Padding(
+                        padding: const EdgeInsets.all(0.0),
+                        child: Text("signIn",
+                                style: TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    fontSize: 14,
+                                    color: CustomColors.black))
+                            .tr()),
+                  ),
+                ],
+              ),
             ],
           ),
         ),

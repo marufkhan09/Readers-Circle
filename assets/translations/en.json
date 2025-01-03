@@ -9,5 +9,8 @@
     "ln": "English",
     "dontHaveAccount": "Don't have an Account?",
     "register": "Register",
-    "passwordHint": "Password"
+    "passwordHint": "Password",
+    "fName": "First Name",
+    "lName": "Last Name",
+    "phone": "Phone Number"
 }

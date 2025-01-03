@@ -9,5 +9,8 @@
     "ln": "বাংলা",
     "dontHaveAccount": "অ্যাকাউন্ট নেই?",
     "register": "নিবন্ধন",
-    "passwordHint": "পাসওয়ার্ড"
+    "passwordHint": "পাসওয়ার্ড",
+    "fName": "ফার্স্ট নেম",
+    "phone":"ফোন নাম্বার ",
+    "lName": "লাস্ট নেম"
 }
