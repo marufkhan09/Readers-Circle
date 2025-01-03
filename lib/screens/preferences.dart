@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:readers_circle/models/prerenences_model/datum.dart';
+import 'package:readers_circle/providers/preferences_provider.dart';
+import 'package:readers_circle/utils/toast.dart';
 
 class PreferencesScreen extends StatefulWidget {
   const PreferencesScreen({super.key});
@@ -8,63 +12,107 @@ class PreferencesScreen extends StatefulWidget {
 }
 
 class _PreferencesScreenState extends State<PreferencesScreen> {
-  final List<String> bookTypes = [
-    'Fiction',
-    'Non-Fiction',
-    'Mystery',
-    'Romance',
-    'Science Fiction',
-    'Fantasy',
-    'Biography',
-    'History',
-    'Self-Help',
-    'Health',
-  ];
+  final Set<String> selectedPreferences = <String>{};
+  bool isLoading = true;
+  List<CatDatum> categories = [];
 
-  final Set<String> selectedBookTypes = Set<String>();
+  @override
+  void initState() {
+    super.initState();
+    _loadPreferences();
+  }
+
+  Future<void> _loadPreferences() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final provider = Provider.of<PrefProvider>(context, listen: false);
+      final preferences = await provider.getPreferences();
+
+      setState(() {
+        categories = preferences.data!;
+      });
+    } catch (e) {
+      debugPrint("Error loading preferences: $e");
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Select Book Preferences'),
+        title: const Text('Select Your Preferences'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Wrap(
-              spacing: 8.0,
-              children: bookTypes.map((type) {
-                final isSelected = selectedBookTypes.contains(type);
-                return ChoiceChip(
-                  label: Text(type),
-                  selected: isSelected,
-                  onSelected: (selected) {
-                    setState(() {
-                      if (selected) {
-                        selectedBookTypes.add(type);
-                      } else {
-                        selectedBookTypes.remove(type);
-                      }
-                    });
-                  },
-                  selectedColor: Colors.blue,
-                  backgroundColor: Colors.grey[200],
-                );
-              }).toList(),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ListView.builder(
+                itemCount: categories.length,
+                itemBuilder: (context, index) {
+                  final category = categories[index];
+                  final categoryName = category.categoryName;
+                  final subcategories = category.subcategories;
+
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          categoryName!,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                          ),
+                        ),
+                        const SizedBox(height: 8.0),
+                        Wrap(
+                          spacing: 8.0,
+                          children: subcategories!.map<Widget>((subcat) {
+                            final isSelected =
+                                selectedPreferences.contains(subcat);
+                            return ChoiceChip(
+                              label: Text(subcat),
+                              selected: isSelected,
+                              onSelected: (selected) {
+                                setState(() {
+                                  if (selected) {
+                                    selectedPreferences.add(subcat);
+                                  } else {
+                                    selectedPreferences.remove(subcat);
+                                  }
+                                });
+                              },
+                              selectedColor: Colors.blue,
+                              backgroundColor: Colors.grey[200],
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
             ),
-            Spacer(),
-            ElevatedButton(
-              onPressed: selectedBookTypes.length >= 3
-                  ? () {
-                      Navigator.pushNamed(context, '/dashboard');
-                    }
-                  : null,
-              child: Text('Continue to Dashboard'),
-            ),
-          ],
-        ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: selectedPreferences.length >= 3
+            ? () {
+                Navigator.pushNamed(context, '/dashboard');
+              }
+            : () {
+                showMessageToast(
+                    message: 'Please select at least 3 preferences');
+              },
+        label: const Text('Continue'),
+        icon: const Icon(Icons.arrow_forward),
       ),
     );
   }

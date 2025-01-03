@@ -1,12 +1,12 @@
-class Datum {
+class CatDatum {
   String? categoryName;
-  List<String>? subcategories;
+  List<dynamic>? subcategories;
 
-  Datum({this.categoryName, this.subcategories});
+  CatDatum({this.categoryName, this.subcategories});
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
-        categoryName: json['category_name'] as String?,
-        subcategories: json['subcategories'] as List<String>?,
+  factory CatDatum.fromJson(Map<String, dynamic> json) => CatDatum(
+        categoryName: json['category_name'] ?? "",
+        subcategories: json['subcategories'] ?? [],
       );
 
   Map<String, dynamic> toJson() => {

@@ -24,8 +24,7 @@ class PrefProvider extends BaseApiService with ChangeNotifier {
 
   //Preference list
 
-  Future<PreferenceModel> getPreferences(
-      {required int page, required String type}) async {
+  Future<PreferenceModel> getPreferences() async {
     try {
       final response = await getDio()!.get(categoriesPath);
 
