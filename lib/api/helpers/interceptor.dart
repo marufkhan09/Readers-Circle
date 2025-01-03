@@ -58,16 +58,17 @@ class LoggingInterceptors extends InterceptorsWrapper {
   }
 
   @override
-  Future onError(DioError err, ErrorInterceptorHandler handler) async {
-    debugPrint(
-        "ERROR[${err.response?.statusCode}] => PATH: ${err.requestOptions.baseUrl}${err.requestOptions.path}");
-    if (err.response!.statusCode == 401) {
-      _sharedPref.remove('token');
-      log("Interceptor error");
-      var currentContext =
-          GlobalVariableKeys.navigatorState.currentState!.context;
-      Navigator.pushNamed(currentContext, Routes.loginScreen);
-    }
+  Future onError(DioException err, ErrorInterceptorHandler handler) async {
+    // debugPrint(
+    //     "ERROR[${err.response?.statusCode}] => PATH: ${err.requestOptions.baseUrl}${err.requestOptions.path}");
+    // if (err.response!.statusCode == 401) {
+    //   _sharedPref.remove('token');
+    //   log("Interceptor error");
+    //   var currentContext =
+    //       GlobalVariableKeys.navigatorState.currentState!.context;
+    //   Navigator.pushNamed(currentContext, Routes.loginScreen);
+    // }
+    log(err.toString());
     /* if (error.response!.statusCode == 401) {
       String refreshToken =
           await _sharedPref.readString("apiRefreshToken") ?? "";

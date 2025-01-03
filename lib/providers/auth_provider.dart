@@ -24,7 +24,7 @@ class AuthProvider extends BaseApiService with ChangeNotifier {
     _loginResponse = value;
   }
 
-  Future<int> loginCall({
+  Future loginCall({
     required String email,
     required String password,
   }) async {
@@ -36,13 +36,14 @@ class AuthProvider extends BaseApiService with ChangeNotifier {
       CustomSnackBar(text: _loginResponse.message!, isError: true);
       _status = Status.success;
       notifyListeners();
-      return response.statusCode!;
+      //   return response.statusCode!;
     } on DioException catch (e) {
-      final responseJson = json.decode(e.response.toString());
-      CustomSnackBar(text: responseJson["message"], isError: true);
+      log(e.toString());
+      // final responseJson = json.decode(e.response.toString());
+      // CustomSnackBar(text: responseJson["message"], isError: true);
       _status = Status.failed;
       notifyListeners();
-      return e.response!.statusCode!;
+      //  return e.response!.statusCode!;
     } finally {
       notifyListeners(); // Notify listeners that the data has changed
     }

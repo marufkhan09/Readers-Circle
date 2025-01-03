@@ -47,6 +47,9 @@ class _PasswordInputState extends State<PasswordInput> {
             _errorMessage = _validate(value);
           });
         }
+        if (value.isNotEmpty) {
+          widget.onDone(value); // Call onDone immediately on input change
+        }
       },
       decoration: InputDecoration(
         fillColor: CustomColors.white,

@@ -37,14 +37,19 @@ class _TextState extends State<TextInput> {
       textCapitalization: widget.textCapitalization,
       onFieldSubmitted: (value) {
         if (value.isNotEmpty && widget.validateOnInteraction) {
-          widget.onDone(value);
+          widget.onDone(
+              value); // This will now handle submission when the field is submitted
         }
       },
       onChanged: (value) {
         if (widget.validateOnInteraction) {
           setState(() {
-            _errorMessage = _validate(value);
+            _errorMessage =
+                _validate(value); // Handle validation when the value changes
           });
+        }
+        if (value.isNotEmpty) {
+          widget.onDone(value); // Return the value immediately after it changes
         }
       },
       decoration: InputDecoration(

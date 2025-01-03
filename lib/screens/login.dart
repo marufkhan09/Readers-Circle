@@ -24,6 +24,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
+    _emailController.text = "masuda@gmail.com";
+    _passwordController.text = "123456Ma#";
     super.initState();
   }
 
@@ -89,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       TextInput(
                         onDone: (value) {
-                          // Handle email value here
+                          _emailController.text = value!;
                         },
                         textInputAction: TextInputAction.done,
                         keyboardType: TextInputType.emailAddress,
@@ -101,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       PasswordInput(
                         onDone: (value) {
-                          // Handle password value here
+                          _passwordController.text = value!;
                         },
                         textInputAction: TextInputAction.done,
                         hint: tr("passwordHint"),

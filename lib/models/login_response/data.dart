@@ -6,7 +6,7 @@ class Data {
   String? accountType;
   String? email;
   String? phoneNumber;
-  List<String>? preferences;
+  List<dynamic>? preferences;
 
   Data({
     this.token,
@@ -27,7 +27,7 @@ class Data {
         accountType: json['account_type'] as String?,
         email: json['email'] as String?,
         phoneNumber: json['phone_number'] as String?,
-        preferences: json['preferences'] as List<String>?,
+        preferences: json['preferences'] ?? <String>[],
       );
 
   Map<String, dynamic> toJson() => {
