@@ -19,10 +19,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool _obscureText = true;
-  bool tapped = false;
 
   @override
   void initState() {
@@ -127,8 +125,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: CustomActionButton(
                           onTap: () {
                             if (_formKey.currentState!.validate()) {
-                              provider.login(
-                                  phone: _phoneController.text,
+                              provider.loginCall(
+                                  email: _emailController.text,
                                   password: _passwordController.text);
                             }
                           },
@@ -136,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ? const CircularProgressIndicator(
                                   color: Colors.white,
                                 )
-                              : Text(
+                              : const Text(
                                   "signIn",
                                   style: TextStyle(
                                       fontSize: 16,

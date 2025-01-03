@@ -1,5 +1,3 @@
 import 'package:flutter/foundation.dart';
 
-class SplashProvider extends ChangeNotifier {
-  
-}
+class SplashProvider extends ChangeNotifier {}

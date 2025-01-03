@@ -22,12 +22,12 @@ class _SplashScreenState extends State<SplashScreen>
         if (value) {
           Timer(
             const Duration(seconds: 3),
-            () => Navigator.pushReplacementNamed(context,Routes.dashboard),
+            () => Navigator.pushReplacementNamed(context, Routes.dashboard),
           );
         } else {
           Timer(
             const Duration(seconds: 3),
-            () => Navigator.pushReplacementNamed(context,Routes.loginScreen),
+            () => Navigator.pushReplacementNamed(context, Routes.loginScreen),
           );
         }
       },

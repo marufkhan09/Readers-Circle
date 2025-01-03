@@ -76,5 +76,4 @@ class BaseApiService {
         return 'Oops something went wrong';
     }
   }
-
 }

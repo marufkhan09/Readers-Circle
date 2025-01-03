@@ -13,7 +13,7 @@ class _NumberFieldState extends State<NumberField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(left: 8,bottom: 8.0),
+      margin: const EdgeInsets.only(left: 8, bottom: 8.0),
       width: 100,
       child: TextFormField(
         controller: _numberController,

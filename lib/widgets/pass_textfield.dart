@@ -17,7 +17,8 @@ class PasswordInput extends StatefulWidget {
     this.hint,
     this.validateOnInteraction = true, // Default to true for validation
     this.obscureText = true, // Default to obscure the password
-    this.showPasswordToggle = true, // Allow the user to toggle password visibility
+    this.showPasswordToggle =
+        true, // Allow the user to toggle password visibility
   });
 
   @override
@@ -83,14 +84,15 @@ class _PasswordInputState extends State<PasswordInput> {
     );
   }
 
-  // Function to validate password
   String? _validate(String value) {
     if (value.isEmpty) {
       return "Password can't be empty";
-    } else if (value.length < 6) {
-      return "Password must be at least 6 characters long";
-    } else if (!RegExp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{6,}$').hasMatch(value)) {
-      return "Password must contain at least one letter and one number";
+    } else if (value.length < 8) {
+      return "Password must be at least 8 characters long";
+    } else if (!RegExp(
+            r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$')
+        .hasMatch(value)) {
+      return "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character";
     }
     return null;
   }
