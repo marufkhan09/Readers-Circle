@@ -6,7 +6,8 @@
     "loginSubTitle": "Please provide your email & password to login",
     "forgotPassword": "Forgot password?",
     "emailHint": "Email address",
-    "ln":"English",
+    "ln": "English",
     "dontHaveAccount": "Don't have an Account?",
-    "register":"Register"
+    "register": "Register",
+    "passwordHint": "Password"
 }

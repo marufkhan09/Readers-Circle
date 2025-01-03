@@ -3,10 +3,11 @@
     "promptPassword": "পিন নম্বর",
     "actionSignIn": "আপনার একাউন্টে লগইন করুন",
     "signIn": "লগইন করুন",
-    "loginSubTitle": "অনুগ্রহ করে লগইন করার জন্য আপনার মোবাইল নম্বর এবং পিন নম্বর দিন",
+    "loginSubTitle": "অনুগ্রহ করে লগইন করার জন্য আপনার ইমেইল এবং পিন নম্বর দিন",
     "forgotPassword": "পিন ভুলে গিয়েছেন?",
-    "emailHint": "Email address",
+    "emailHint": "ইমেইল",
     "ln": "বাংলা",
     "dontHaveAccount": "অ্যাকাউন্ট নেই?",
-    "register": "নিবন্ধন"
+    "register": "নিবন্ধন",
+    "passwordHint": "পাসওয়ার্ড"
 }

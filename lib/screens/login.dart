@@ -7,6 +7,8 @@ import 'package:readers_circle/providers/auth_provider.dart';
 import 'package:readers_circle/utils/colors.dart';
 import 'package:readers_circle/utils/routes.dart';
 import 'package:readers_circle/widgets/buton.dart';
+import 'package:readers_circle/widgets/pass_textfield.dart';
+import 'package:readers_circle/widgets/text_field.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -56,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: SingleChildScrollView(
           child: Container(
             width: double.infinity,
-            margin: const EdgeInsets.only(left: 36.0, right: 36.0),
+            margin: const EdgeInsets.only(left: 16.0, right: 16.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,81 +89,29 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextFormField(
-                        controller: _phoneController,
-                        keyboardType: TextInputType.phone,
-                        textInputAction: TextInputAction.next,
-                        decoration: InputDecoration(
-                          fillColor: CustomColors.white,
-                          filled: true,
-                          contentPadding:
-                              const EdgeInsets.fromLTRB(15.0, 5.0, 5.0, 5.0),
-                          hintText: tr("mobile"),
-                          hintStyle: TextStyle(
-                              fontSize: 16.0, color: CustomColors.broder),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: BorderSide(
-                                color: CustomColors.broder, width: 0.5),
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Can't be empty";
-                          }
-                          return null;
+                      TextInput(
+                        onDone: (value) {
+                          // Handle email value here
                         },
+                        textInputAction: TextInputAction.done,
+                        keyboardType: TextInputType.emailAddress,
+                        hint: tr("emailHint"),
+                        validateOnInteraction: true,
                       ),
                       const SizedBox(
                         height: 10,
                       ),
-                      TextFormField(
-                        controller: _passwordController,
-                        obscureText: _obscureText,
-                        keyboardType: TextInputType.text,
-                        onFieldSubmitted: (value) {
-                          if (_formKey.currentState!.validate()) {
-                            Provider.of<AuthProvider>(context, listen: false)
-                                .login(
-                                    phone: _phoneController.text,
-                                    password: _passwordController.text);
-                          }
+                      PasswordInput(
+                        onDone: (value) {
+                          // Handle password value here
                         },
-                        decoration: InputDecoration(
-                            fillColor: CustomColors.white,
-                            filled: true,
-                            contentPadding:
-                                const EdgeInsets.fromLTRB(15.0, 5.0, 5.0, 5.0),
-                            hintText: tr("promptPassword"),
-                            hintStyle: TextStyle(
-                                fontSize: 16.0,
-                                color: CustomColors.broder,
-                                fontWeight: FontWeight.w400),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: BorderSide(
-                                  color: CustomColors.button, width: 0.5),
-                            ),
-                            suffixIcon: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  _obscureText = !_obscureText;
-                                });
-                              },
-                              icon: Icon(
-                                _obscureText == true
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
-                                color: Colors.grey,
-                              ),
-                            )),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Can't be empty";
-                          }
-                          return null;
-                        },
-                      ),
+                        textInputAction: TextInputAction.done,
+                        hint: tr("passwordHint"),
+                        validateOnInteraction: true, // Validate while typing
+                        obscureText: true, // Password is initially hidden
+                        showPasswordToggle:
+                            true, // Show/hide password toggle button
+                      )
                     ],
                   ),
                 ),
