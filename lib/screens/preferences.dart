@@ -1,8 +1,11 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:readers_circle/models/prerenences_model/datum.dart';
 import 'package:readers_circle/providers/preferences_provider.dart';
 import 'package:readers_circle/utils/colors.dart';
+import 'package:readers_circle/utils/routes.dart';
+import 'package:readers_circle/utils/shared_pref.dart';
 import 'package:readers_circle/utils/toast.dart';
 
 class PreferencesScreen extends StatefulWidget {
@@ -16,11 +19,15 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
   final Set<String> selectedPreferences = <String>{};
   bool isLoading = true;
   List<CatDatum> categories = [];
+  late PrefProvider provider;
+  SharedPref sharedPref = SharedPref();
 
   @override
   void initState() {
     super.initState();
+    provider = Provider.of<PrefProvider>(context, listen: false);
     _loadPreferences();
+    provider.getSavedLoginResponse();
   }
 
   Future<void> _loadPreferences() async {
@@ -29,7 +36,6 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
     });
 
     try {
-      final provider = Provider.of<PrefProvider>(context, listen: false);
       final preferences = await provider.getPreferences();
 
       setState(() {
@@ -106,7 +112,23 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: selectedPreferences.length >= 3
             ? () {
-                Navigator.pushNamed(context, '/dashboard');
+                //  Navigator.pushNamed(context, '/dashboard');
+                log(selectedPreferences.toString());
+                log(provider.loginResponse.toString());
+                provider
+                    .setPreferences(
+                        prefs: selectedPreferences.toList(),
+                        id: context
+                            .read<PrefProvider>()
+                            .loginResponse
+                            .data!
+                            .id!
+                            .toString())
+                    .then((val) {
+                  if (val == 200 || val == 201) {
+                    Navigator.pushNamed(context, Routes.dashboard);
+                  }
+                });
               }
             : () {
                 showMessageToast(
