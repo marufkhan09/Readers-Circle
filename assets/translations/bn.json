@@ -6,5 +6,7 @@
     "loginSubTitle": "অনুগ্রহ করে লগইন করার জন্য আপনার মোবাইল নম্বর এবং পিন নম্বর দিন",
     "forgotPassword": "পিন ভুলে গিয়েছেন?",
     "emailHint": "Email address",
-    "ln": "বাংলা"
+    "ln": "বাংলা",
+    "dontHaveAccount": "অ্যাকাউন্ট নেই?",
+    "register": "নিবন্ধন"
 }

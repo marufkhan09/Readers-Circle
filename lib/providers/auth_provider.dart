@@ -3,7 +3,7 @@ import 'package:readers_circle/api/helpers/response_status.dart';
 import 'package:readers_circle/api/login_api_call.dart';
 import 'package:readers_circle/utils/shared_pref.dart';
 
-class LoginProvider extends ChangeNotifier {
+class AuthProvider extends ChangeNotifier {
   final SharedPref sharedPref = SharedPref();
 
   Status get status => _status;

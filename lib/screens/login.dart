@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:readers_circle/api/helpers/response_status.dart';
-import 'package:readers_circle/providers/login_provider.dart';
+import 'package:readers_circle/providers/auth_provider.dart';
 import 'package:readers_circle/utils/colors.dart';
+import 'package:readers_circle/utils/routes.dart';
 import 'package:readers_circle/widgets/buton.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -120,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         keyboardType: TextInputType.text,
                         onFieldSubmitted: (value) {
                           if (_formKey.currentState!.validate()) {
-                            Provider.of<LoginProvider>(context, listen: false)
+                            Provider.of<AuthProvider>(context, listen: false)
                                 .login(
                                     phone: _phoneController.text,
                                     password: _passwordController.text);
@@ -169,7 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 20,
                 ),
 
-                Consumer<LoginProvider>(
+                Consumer<AuthProvider>(
                   builder: (context, provider, child) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -194,10 +195,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ).tr()),
                     );
                   },
-                )
+                ),
 
-                //Login Button
-                ,
                 const SizedBox(
                   height: 10,
                 ),
@@ -275,6 +274,29 @@ class _LoginScreenState extends State<LoginScreen> {
                                       fontSize: 14,
                                       color: CustomColors.black))
                               .tr()),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("dontHaveAccount",
+                            style: TextStyle(
+                                fontSize: 14, color: CustomColors.black))
+                        .tr(),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, Routes.register);
+                      },
+                      child: const Text("register",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: CustomColors.primary,
+                                  fontWeight: FontWeight.bold))
+                          .tr(),
                     ),
                   ],
                 ),
