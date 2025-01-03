@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:readers_circle/models/book_model/datum.dart';
 import 'package:readers_circle/providers/book_provider.dart';
+import 'package:readers_circle/utils/colors.dart';
+import 'package:readers_circle/utils/routes.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -26,17 +28,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Book Shop'),
           actions: [
             IconButton(
-              icon: const Icon(Icons.account_circle),
+              icon: const Icon(
+                Icons.account_circle,
+                color: CustomColors.primaryLight4,
+                size: 40,
+              ),
               onPressed: () {
-                // Navigate to profile page
+                Navigator.pushNamed(context, Routes.profile);
               },
             ),
           ],
           bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(60.0),
+            preferredSize: const Size.fromHeight(80.0),
             child: Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -45,7 +50,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   hintText: "Search for books...",
                   prefixIcon: const Icon(Icons.search),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.0),
+                    borderRadius: BorderRadius.circular(30.0),
                     borderSide: BorderSide.none,
                   ),
                   filled: true,

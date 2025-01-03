@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:readers_circle/providers/preferences_provider.dart';
 import 'package:readers_circle/utils/routes.dart';
 import 'package:readers_circle/utils/shared_pref.dart';
+import 'package:readers_circle/widgets/buton.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -26,77 +27,81 @@ class _ProfileScreenState extends State<ProfileScreen> {
     var userData = provider.loginResponse.data;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: const Text('Profile'),
         actions: [
           IconButton(
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
             onPressed: () {
               // Handle logout action
             },
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Center(
-              child: CircleAvatar(
-                radius: 50,
-                backgroundImage: AssetImage(
-                    'assets/profile_picture.png'), // Add a profile picture asset
-              ),
-            ),
-            const SizedBox(height: 16),
-            Center(
-              child: Text(
-                '${userData!.firstName} ${userData.lastName}',
-                style:
-                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-            ),
-            const SizedBox(height: 8),
-            const Divider(),
-            ListTile(
-              leading: Icon(Icons.email),
-              title: const Text('Email'),
-              subtitle: Text(userData.email!),
-            ),
-            ListTile(
-              leading: const Icon(Icons.phone),
-              title: const Text('Phone'),
-              subtitle: Text(userData.phoneNumber!),
-            ),
-            ListTile(
-              leading: const Icon(Icons.account_circle),
-              title: const Text('Account Type'),
-              subtitle: Text(userData.accountType!),
-            ),
-            ListTile(
-              leading: const Icon(Icons.book),
-              title: const Text('Preferences'),
-              subtitle: Column(
+      body: userData != null
+          ? SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  for (var preference in userData.preferences!)
-                    Text('- $preference'),
+                  const Center(
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundImage: AssetImage(
+                          'assets/profile.png'), // Add a profile picture asset
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Center(
+                    child: Text(
+                      '${userData!.firstName} ${userData.lastName}',
+                      style: const TextStyle(
+                          fontSize: 24, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  const Divider(),
+                  ListTile(
+                    leading: Icon(Icons.email),
+                    title: const Text('Email'),
+                    subtitle: Text(userData.email!),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.phone),
+                    title: const Text('Phone'),
+                    subtitle: Text(userData.phoneNumber!),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.account_circle),
+                    title: const Text('Account Type'),
+                    subtitle: Text(userData.accountType!),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.book),
+                    title: const Text('Preferences'),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        for (var preference in userData.preferences!)
+                          Text('- $preference'),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  CustomActionButton(
+                    onTap: () {
+                      sharedPref.remove("isLoggedIn");
+                      Navigator.pushReplacementNamed(
+                          context, Routes.loginScreen);
+                    },
+                    child: const Text(
+                      'Logout',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  )
                 ],
               ),
-            ),
-            const SizedBox(height: 16),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  sharedPref.clear();
-                  Navigator.pushReplacementNamed(context, Routes.loginScreen);
-                },
-                child: const Text('Logout'),
-              ),
-            ),
-          ],
-        ),
-      ),
+            )
+          : const Center(child: CircularProgressIndicator()),
     );
   }
 }

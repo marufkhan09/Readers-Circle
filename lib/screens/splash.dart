@@ -20,7 +20,6 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
-    // sharedPref.clear();
     provider = Provider.of<AuthProvider>(context, listen: false);
     provider.checkIfLoggedin().then(
       (value) async {

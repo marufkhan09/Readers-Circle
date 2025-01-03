@@ -63,7 +63,7 @@ class PrefProvider extends BaseApiService with ChangeNotifier {
     try {
       final response = await getDio()!
           .put("users/$id/set-preference", data: {"preferences[]   ": prefs});
-
+      sharedPref.saveInt("preferences", prefs.length);
       notifyListeners();
       return response.statusCode!;
     } on DioException catch (e) {
@@ -81,6 +81,7 @@ class PrefProvider extends BaseApiService with ChangeNotifier {
     if (loginResponseString != null) {
       final jsonMap = json.decode(loginResponseString) as Map<String, dynamic>;
       _loginResponse = LoginResponse.fromJson(jsonMap);
+      
       notifyListeners();
       return _loginResponse;
     } else {

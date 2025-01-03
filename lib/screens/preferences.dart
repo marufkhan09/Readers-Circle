@@ -112,7 +112,6 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: selectedPreferences.length >= 3
             ? () {
-                //  Navigator.pushNamed(context, '/dashboard');
                 log(selectedPreferences.toString());
                 log(provider.loginResponse.toString());
                 provider
@@ -126,7 +125,8 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                             .toString())
                     .then((val) {
                   if (val == 200 || val == 201) {
-                    Navigator.pushNamed(context, Routes.dashboard);
+                    
+                    Navigator.pushReplacementNamed(context, Routes.dashboard);
                   }
                 });
               }
