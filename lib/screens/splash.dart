@@ -1,5 +1,6 @@
-import 'dart:async';
 import 'dart:convert';
+import 'dart:async';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:readers_circle/models/login_response/login_response.dart';
@@ -16,32 +17,28 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with WidgetsBindingObserver {
-  
-  LoginResponse? _loginResponse;
+  late AuthProvider provider;
   SharedPref sharedPref = SharedPref();
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
-    Provider.of<AuthProvider>(context, listen: false).checkIfLoggedin().then(
+    provider = Provider.of<AuthProvider>(context, listen: false);
+    provider.checkIfLoggedin().then(
       (value) async {
         if (value) {
-      var jsonString =await  sharedPref.readObject("loginResponse") ?? null;
-        _loginResponse = json.decode((jsonString));
-
-        if(_loginResponse!.data!.preferences!.isNotEmpty){
-          Navigator.pushReplacementNamed(context, Routes.dashboard);
-        }else{
-
-        }
-
-          Timer(
-            const Duration(seconds: 3),
-            (){
-              
-            },
-          );
+          var prefCount = await sharedPref.readInt("preferences") ?? 0;
+          if (prefCount > 0) {
+            Timer(
+              const Duration(seconds: 3),
+              () => Navigator.pushReplacementNamed(context, Routes.dashboard),
+            );
+          } else {
+            Timer(
+              const Duration(seconds: 3),
+              () => Navigator.pushReplacementNamed(context, Routes.preferences),
+            );
+          }
         } else {
           Timer(
             const Duration(seconds: 3),

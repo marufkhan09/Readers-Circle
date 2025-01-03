@@ -21,9 +21,11 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  late AuthProvider provider;
 
   @override
   void initState() {
+    provider = Provider.of<AuthProvider>(context, listen: false);
     _emailController.text = "masuda@gmail.com";
     _passwordController.text = "123456Ma#";
     super.initState();
@@ -120,34 +122,34 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 20,
                 ),
 
-                Consumer<AuthProvider>(
-                  builder: (context, provider, child) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      child: CustomActionButton(
-                          onTap: () {
-                            if (_formKey.currentState!.validate()) {
-                              provider
-                                  .loginCall(
-                                      email: _emailController.text,
-                                      password: _passwordController.text)
-                                  .then((val) {
-                                if (val == 200) {
-                                  if (context
-                                      .watch<AuthProvider>()
-                                      .loginResponse
-                                      .data!
-                                      .preferences!
-                                      .isEmpty) {
-                                  } else {
-                                    Navigator.pushReplacementNamed(
-                                        context, Routes.dashboard);
-                                  }
-                                }
-                              });
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: CustomActionButton(
+                      onTap: () {
+                        if (_formKey.currentState!.validate()) {
+                          context
+                              .read<AuthProvider>()
+                              .loginCall(
+                                  email: _emailController.text,
+                                  password: _passwordController.text)
+                              .then((val) {
+                            if (val == 200) {
+                              if (context
+                                  .watch<AuthProvider>()
+                                  .loginResponse
+                                  .data!
+                                  .preferences!
+                                  .isEmpty) {
+                              } else {
+                                Navigator.pushReplacementNamed(
+                                    context, Routes.dashboard);
+                              }
                             }
-                          },
-                          child: provider.status == Status.loading
+                          });
+                        }
+                      },
+                      child:
+                          context.watch<AuthProvider>().status == Status.loading
                               ? const CircularProgressIndicator(
                                   color: Colors.white,
                                 )
@@ -158,8 +160,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                       color: CustomColors.white,
                                       fontWeight: FontWeight.bold),
                                 ).tr()),
-                    );
-                  },
                 ),
 
                 const SizedBox(
