@@ -29,8 +29,6 @@ class AuthProvider extends BaseApiService with ChangeNotifier {
       final response = await getDio()!
           .post(loginPath, data: {'email': email, 'password': password});
       _loginResponse = LoginResponse.fromJson(response.data);
-      sharedPref.saveInt(
-          "preferences", _loginResponse.data!.preferences!.length);
       sharedPref.saveBool("isLoggedIn", true);
       showMessageToast(message: _loginResponse.message!);
       _status = Status.success;

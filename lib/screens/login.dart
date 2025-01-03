@@ -6,6 +6,7 @@ import 'package:readers_circle/api/helpers/response_status.dart';
 import 'package:readers_circle/providers/auth_provider.dart';
 import 'package:readers_circle/utils/colors.dart';
 import 'package:readers_circle/utils/routes.dart';
+import 'package:readers_circle/utils/shared_pref.dart';
 import 'package:readers_circle/widgets/buton.dart';
 import 'package:readers_circle/widgets/pass_textfield.dart';
 import 'package:readers_circle/widgets/text_field.dart';
@@ -21,7 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
+  SharedPref sharedPref = SharedPref();
   late AuthProvider provider;
 
   @override
@@ -30,6 +31,15 @@ class _LoginScreenState extends State<LoginScreen> {
     // Remove the provider initialization from here
     _emailController.text = "masuda@gmail.com";
     _passwordController.text = "123456Ma#";
+  }
+
+  preferenceCheck() async {
+    var count = await sharedPref.readInt("preferences") ?? 0;
+    if (count > 0) {
+      Navigator.pushReplacementNamed(context, Routes.dashboard);
+    } else {
+      Navigator.pushReplacementNamed(context, Routes.preferences);
+    }
   }
 
   @override
@@ -138,13 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           )
                               .then((val) {
                             if (val == 200) {
-                              if (provider
-                                  .loginResponse.data!.preferences!.isEmpty) {
-                                // Handle the case where preferences are empty
-                              } else {
-                                Navigator.pushReplacementNamed(
-                                    context, Routes.dashboard);
-                              }
+                              preferenceCheck();
                             }
                           });
                         }
