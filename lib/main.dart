@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:readers_circle/providers/auth_provider.dart';
+import 'package:readers_circle/providers/preferences_provider.dart';
 import 'package:readers_circle/providers/splash_provider.dart';
 import 'package:readers_circle/utils/keys.dart';
 import 'package:readers_circle/utils/route_observer.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => SplashProvider()),
         ChangeNotifierProvider(create: (context) => AuthProvider()),
+        ChangeNotifierProvider(create: (context) => PrefProvider()),
       ],
       child: MaterialApp(
         navigatorObservers: [routeObserver],
