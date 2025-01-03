@@ -1,8 +1,5 @@
 import 'dart:async';
-import 'dart:developer';
-import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:readers_circle/utils/keys.dart';
 import 'package:readers_circle/utils/routes.dart';
@@ -59,16 +56,14 @@ class LoggingInterceptors extends InterceptorsWrapper {
 
   @override
   Future onError(DioException err, ErrorInterceptorHandler handler) async {
-    // debugPrint(
-    //     "ERROR[${err.response?.statusCode}] => PATH: ${err.requestOptions.baseUrl}${err.requestOptions.path}");
-    // if (err.response!.statusCode == 401) {
-    //   _sharedPref.remove('token');
-    //   log("Interceptor error");
-    //   var currentContext =
-    //       GlobalVariableKeys.navigatorState.currentState!.context;
-    //   Navigator.pushNamed(currentContext, Routes.loginScreen);
-    // }
-    log(err.toString());
+    debugPrint(
+        "ERROR[${err.response?.statusCode}] => PATH: ${err.requestOptions.baseUrl}${err.requestOptions.path}");
+    if (err.response!.statusCode == 401) {
+      _sharedPref.remove('isLoggedIn');
+      var currentContext =
+          GlobalVariableKeys.navigatorState.currentState!.context;
+      Navigator.pushNamed(currentContext, Routes.loginScreen);
+    }
     /* if (error.response!.statusCode == 401) {
       String refreshToken =
           await _sharedPref.readString("apiRefreshToken") ?? "";
@@ -120,12 +115,6 @@ class LoggingInterceptors extends InterceptorsWrapper {
       }
     } else */
     return super.onError(err, handler);
-  }
-
-  bool _shouldRetry(DioError err) {
-    return err.type == DioErrorType.unknown &&
-        err.error != null &&
-        err.error is SocketException;
   }
 }
 

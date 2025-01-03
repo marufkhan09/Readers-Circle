@@ -1,7 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
-import 'dart:math';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:readers_circle/api/api_paths.dart';
@@ -9,7 +6,6 @@ import 'package:readers_circle/api/base_api_service.dart';
 import 'package:readers_circle/api/helpers/response_status.dart';
 import 'package:readers_circle/models/login_response/login_response.dart';
 import 'package:readers_circle/utils/shared_pref.dart';
-import 'package:readers_circle/widgets/progressBar.dart';
 import 'package:readers_circle/widgets/snackbar.dart';
 
 class AuthProvider extends BaseApiService with ChangeNotifier {
@@ -33,8 +29,9 @@ class AuthProvider extends BaseApiService with ChangeNotifier {
     try {
       final response = await getDio()!
           .post(loginPath, data: {'email': email, 'password': password});
-
       _loginResponse = LoginResponse.fromJson(response.data);
+      sharedPref.saveObject("loginResponse", _loginResponse);
+      sharedPref.saveBool("isLoggedIn", true);
       CustomSnackBar(text: _loginResponse.message!, isError: false);
       _status = Status.success;
       notifyListeners();

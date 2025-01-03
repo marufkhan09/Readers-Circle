@@ -127,9 +127,24 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: CustomActionButton(
                           onTap: () {
                             if (_formKey.currentState!.validate()) {
-                              provider.loginCall(
-                                  email: _emailController.text,
-                                  password: _passwordController.text);
+                              provider
+                                  .loginCall(
+                                      email: _emailController.text,
+                                      password: _passwordController.text)
+                                  .then((val) {
+                                if (val == 200) {
+                                  if (context
+                                      .watch<AuthProvider>()
+                                      .loginResponse
+                                      .data!
+                                      .preferences!
+                                      .isEmpty) {
+                                  } else {
+                                    Navigator.pushReplacementNamed(
+                                        context, Routes.dashboard);
+                                  }
+                                }
+                              });
                             }
                           },
                           child: provider.status == Status.loading
