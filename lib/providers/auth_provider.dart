@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -24,7 +25,8 @@ class AuthProvider extends BaseApiService with ChangeNotifier {
     _loginResponse = value;
   }
 
-  Future loginCall({
+//login
+  Future<int> loginCall({
     required String email,
     required String password,
   }) async {
@@ -33,17 +35,49 @@ class AuthProvider extends BaseApiService with ChangeNotifier {
           .post(loginPath, data: {'email': email, 'password': password});
 
       _loginResponse = LoginResponse.fromJson(response.data);
-      CustomSnackBar(text: _loginResponse.message!, isError: true);
+      CustomSnackBar(text: _loginResponse.message!, isError: false);
       _status = Status.success;
       notifyListeners();
-      //   return response.statusCode!;
+      return response.statusCode!;
     } on DioException catch (e) {
-      log(e.toString());
-      // final responseJson = json.decode(e.response.toString());
-      // CustomSnackBar(text: responseJson["message"], isError: true);
+      final responseJson = json.decode(e.response.toString());
+      CustomSnackBar(text: responseJson["message"], isError: true);
       _status = Status.failed;
       notifyListeners();
-      //  return e.response!.statusCode!;
+      return e.response!.statusCode!;
+    } finally {
+      notifyListeners(); // Notify listeners that the data has changed
+    }
+  }
+
+  //registration
+
+  Future<int> registerCall({
+    required String fName,
+    required String lName,
+    required String email,
+    required String phone,
+  }) async {
+    try {
+      final response = await getDio()!.post(registerPath, data: {
+        'first_name': fName,
+        'last_name': lName,
+        'email': email,
+        'phone_number': phone,
+        'account_type': "borrower"
+      });
+
+      final responseJson = json.decode(response.toString());
+      CustomSnackBar(text: responseJson["message"], isError: false);
+      _status = Status.success;
+      notifyListeners();
+      return response.statusCode!;
+    } on DioException catch (e) {
+      final responseJson = json.decode(e.response.toString());
+      CustomSnackBar(text: responseJson["message"], isError: true);
+      _status = Status.failed;
+      notifyListeners();
+      return e.response!.statusCode!;
     } finally {
       notifyListeners(); // Notify listeners that the data has changed
     }

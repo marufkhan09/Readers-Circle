@@ -155,67 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     InkWell(
                       radius: 50,
-                      onTap: () async {
-                        showDialog(
-                            context: context,
-                            barrierDismissible: false,
-                            builder: (context) {
-                              return WillPopScope(
-                                onWillPop: () async => false,
-                                child: AlertDialog(
-                                  content: const SizedBox(
-                                    height: 120,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Center(
-                                            child: Text(
-                                          "Demo",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              fontSize: 16, height: 1.5),
-                                        )),
-                                        SizedBox(
-                                          height: 16,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  actions: [
-                                    Container(
-                                      margin: const EdgeInsets.fromLTRB(
-                                          16, 0, 16, 16),
-                                      width: double.infinity,
-                                      decoration: BoxDecoration(
-                                        color: CustomColors.white,
-                                        borderRadius:
-                                            BorderRadius.circular(100),
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          TextButton(
-                                              onPressed: () async {},
-                                              child: const Center(
-                                                child: Text(
-                                                  "Demo",
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w700),
-                                                ),
-                                              )),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            });
-                      },
+                      onTap: () async {},
                       child: Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: Text("forgotPassword",
@@ -239,7 +179,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         .tr(),
                     TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, Routes.register);
+                        Navigator.pushReplacementNamed(
+                            context, Routes.register);
                       },
                       child: const Text("register",
                               style: TextStyle(
