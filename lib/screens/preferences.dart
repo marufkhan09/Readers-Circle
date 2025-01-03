@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:readers_circle/models/prerenences_model/datum.dart';
 import 'package:readers_circle/providers/preferences_provider.dart';
+import 'package:readers_circle/utils/colors.dart';
 import 'package:readers_circle/utils/toast.dart';
 
 class PreferencesScreen extends StatefulWidget {
@@ -91,7 +92,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                                   }
                                 });
                               },
-                              selectedColor: Colors.blue,
+                              selectedColor: CustomColors.primaryLight4,
                               backgroundColor: Colors.grey[200],
                             );
                           }).toList(),

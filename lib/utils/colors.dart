@@ -19,4 +19,23 @@ class CustomColors {
   static const Color white = Colors.white; // Background white
   static const Color secondary =
       Color(0xFF8C6E57); // Lighter shade of brown for accents
+
+  // Variations of the primary color
+  static const Color primaryLight = Color(0xFF8C5A3B); // Slightly lighter
+  static const Color primaryDark = Color(0xFF3C2212); // Slightly darker
+
+  // Accent color (complementary to primary)
+  static const Color accent = Color(0xFF1E4A60); // Cool complementary blue
+
+  // Neutral colors
+  static const Color neutralLight = Color(0xFFF5ECE6); // Light neutral tone
+  static const Color neutralDark = Color(0xFF2E2E2E); // Dark neutral tone
+
+  // Additional shades for usage
+  static const Color shade1 = Color(0xFF704B2F); // A bit lighter than primary
+  static const Color shade2 = Color(0xFF4E2C18); // A bit darker than primary
+   static const Color primaryLight1 = Color(0xFF8C5A3B); // Slightly lighter
+  static const Color primaryLight2 = Color(0xFFB2826A); // Medium-light
+  static const Color primaryLight3 = Color(0xFFD4AB94); // Light
+  static const Color primaryLight4 = Color(0xFFF5D5C1); // Very light
 }
