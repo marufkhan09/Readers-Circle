@@ -119,4 +119,35 @@ class BookProvider extends BaseApiService with ChangeNotifier {
       return _bookDetail;
     }
   }
+
+
+
+
+  // Future<int> registerCall({
+  //   required String id
+  // }) async {
+  //   try {
+  //     final response = await getDio()!.post("books/$id/borrow", data: {
+  //       'first_name': fName,
+  //       'last_name': lName,
+  //       'email': email,
+  //       'phone_number': phone,
+  //       'account_type': "both"
+  //     });
+
+  //     final responseJson = json.decode(response.toString());
+  //     showMessageToast(message: responseJson["message"]);
+  //     _status = Status.success;
+  //     notifyListeners();
+  //     return response.statusCode!;
+  //   } on DioException catch (e) {
+  //     final responseJson = json.decode(e.response.toString());
+  //     showMessageToast(message: responseJson["message"]);
+  //     _status = Status.failed;
+  //     notifyListeners();
+  //     return e.response!.statusCode!;
+  //   } finally {
+  //     notifyListeners(); // Notify listeners that the data has changed
+  //   }
+  // }
 }

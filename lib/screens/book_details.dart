@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:readers_circle/providers/book_provider.dart';
-import 'package:flutter/widgets.dart';
 import 'package:readers_circle/utils/colors.dart';
 
 class BookDetailsScreen extends StatefulWidget {
@@ -38,185 +37,231 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
               padding: const EdgeInsets.all(16.0),
               child: ListView(
                 children: [
-                  // Book Image Section
-                  Center(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12.0),
-                      child: Image.asset(
-                        "assets/images/books.jpg",
-                        height: 250,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
+                  // SECTION 1: Book Image
+                  _buildBookImageSection(),
+
                   const SizedBox(height: 16),
 
-                  // Book Title and Author
-                  Text(
-                    book.data!.title!,
-                    style: const TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                      color: CustomColors.primary,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'by ${book.data!.author!}',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontStyle: FontStyle.italic,
-                      color: CustomColors.greyDark,
-                    ),
-                  ),
+                  // SECTION 2: Book Title & Author
+                  _buildTitleAndAuthorSection(book),
+
                   const SizedBox(height: 16),
 
-                  // Book Description
-                  Text(
-                    book.data!.description!,
-                    style: const TextStyle(
-                        fontSize: 18, color: CustomColors.neutralDark),
-                  ),
+                  // SECTION 3: Book Description
+                  _buildBookDescriptionSection(book),
+
                   const SizedBox(height: 16),
 
-                  // Category and Subcategories
-                  Text(
-                    'Category: ${book.data!.categoryName!}',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: CustomColors.primaryDark,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      for (var subs in book.data!.subcategories!)
-                        Text('- ${subs.name}',
-                            style: TextStyle(
-                                fontSize: 16, color: CustomColors.greyDark)),
-                    ],
-                  ),
+                  // SECTION 4: Category and Subcategories
+                  _buildCategorySection(book),
+
                   const SizedBox(height: 16),
-                  // Rent Details
+
+                  // SECTION 5: Rent Details (If Available)
                   if (book.data!.availableForRent!)
-                    Card(
-                      elevation: 4,
-                      margin: const EdgeInsets.only(top: 16, bottom: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Available for Rent',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: CustomColors.primary,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'Price: \$${book.data!.price}',
-                              style: const TextStyle(
-                                  fontSize: 16,
-                                  color: CustomColors.primaryDark),
-                            ),
-                            const SizedBox(height: 8),
-                            const Text(
-                              'Renter Information:',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: CustomColors.primary,
-                              ),
-                            ),
-                            Text(
-                              'Name: ${book.data!.renterInformation!.name}',
-                              style: TextStyle(
-                                  fontSize: 16, color: CustomColors.greyDark),
-                            ),
-                            Text(
-                              'Email: ${book.data!.renterInformation!.email}',
-                              style: TextStyle(
-                                  fontSize: 16, color: CustomColors.greyDark),
-                            ),
-                            Text(
-                              'Phone: ${book.data!.renterInformation!.phone}',
-                              style: TextStyle(
-                                  fontSize: 16, color: CustomColors.greyDark),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    _buildRentDetailsSection(book),
 
-                  // Sale Details
+                  const SizedBox(height: 16),
+
+                  // SECTION 6: Sale Details (If Available)
                   if (book.data!.availableForSell!)
-                    Card(
-                      elevation: 4,
-                      margin: const EdgeInsets.only(bottom: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Available for Sale',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: CustomColors.primary,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'Price: \$${book.data!.price}',
-                              style: const TextStyle(
-                                  fontSize: 16,
-                                  color: CustomColors.primaryDark),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    _buildSaleDetailsSection(book),
 
-                  // Book Now Button with Styling
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // Add booking logic here
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 40,
-                          vertical: 12,
-                        ),
-                        textStyle: const TextStyle(fontSize: 18),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        backgroundColor: CustomColors.primaryLight,
-                      ),
-                      child: const Text(
-                        'Book Now',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
+                  const SizedBox(height: 16),
+
+                  // SECTION 7: Book Now Button
+                  _buildBookNowButton(),
                 ],
               ),
             )
           : const Center(child: CircularProgressIndicator()),
+    );
+  }
+
+  // Section 1: Book Image
+  Widget _buildBookImageSection() {
+    return Center(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12.0),
+        child: Image.asset(
+          "assets/images/books.jpg",
+          height: 250,
+          width: double.infinity,
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
+
+  // Section 2: Book Title & Author
+  Widget _buildTitleAndAuthorSection(book) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          book.data!.title!,
+          style: const TextStyle(
+            fontSize: 26,
+            fontWeight: FontWeight.bold,
+            color: CustomColors.primary,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          'by ${book.data!.author!}',
+          style: TextStyle(
+            fontSize: 20,
+            fontStyle: FontStyle.italic,
+            color: CustomColors.greyDark,
+          ),
+        ),
+      ],
+    );
+  }
+
+  // Section 3: Book Description
+  Widget _buildBookDescriptionSection(book) {
+    return Text(
+      book.data!.description!,
+      style: const TextStyle(fontSize: 18, color: CustomColors.neutralDark),
+    );
+  }
+
+  // Section 4: Category and Subcategories
+  Widget _buildCategorySection(book) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Category: ${book.data!.categoryName!}',
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: CustomColors.primaryDark,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            for (var subs in book.data!.subcategories!)
+              Text(
+                '- ${subs.name}',
+                style: TextStyle(fontSize: 16, color: CustomColors.greyDark),
+              ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  // Section 5: Rent Details
+  Widget _buildRentDetailsSection(book) {
+    return Card(
+      elevation: 4,
+      margin: const EdgeInsets.only(top: 16, bottom: 16),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Available for Rent',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: CustomColors.primary,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Price: \$${book.data!.price}',
+              style: const TextStyle(
+                  fontSize: 16, color: CustomColors.primaryDark),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Renter Information:',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: CustomColors.primary,
+              ),
+            ),
+            Text(
+              'Name: ${book.data!.renterInformation!.name}',
+              style: TextStyle(fontSize: 16, color: CustomColors.greyDark),
+            ),
+            Text(
+              'Email: ${book.data!.renterInformation!.email}',
+              style: TextStyle(fontSize: 16, color: CustomColors.greyDark),
+            ),
+            Text(
+              'Phone: ${book.data!.renterInformation!.phone}',
+              style: TextStyle(fontSize: 16, color: CustomColors.greyDark),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Section 6: Sale Details
+  Widget _buildSaleDetailsSection(book) {
+    return Card(
+      elevation: 4,
+      margin: const EdgeInsets.only(bottom: 16),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Available for Sale',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: CustomColors.primary,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Price: \$${book.data!.price}',
+              style: const TextStyle(
+                  fontSize: 16, color: CustomColors.primaryDark),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Section 7: Book Now Button
+  Widget _buildBookNowButton() {
+    return Center(
+      child: ElevatedButton(
+        onPressed: () {
+          // Add booking logic here
+        },
+        style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
+          textStyle: const TextStyle(fontSize: 18),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          backgroundColor: CustomColors.primaryLight,
+        ),
+        child: const Text(
+          'Book Now',
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
     );
   }
 }
