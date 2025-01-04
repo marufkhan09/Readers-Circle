@@ -18,6 +18,7 @@
     "nameTooShort": "নামের দৈর্ঘ্য অন্তত ৩ অক্ষর হতে হবে",
     "invalidPhone": "ফোন নম্বর সঠিক নয়!",
     "onlyNumbersAllowed": "শুধু সংখ্যা ব্যবহার করা যাবে!",
-    "fieldRequired": "এই ক্ষেত্রটি আবশ্যক"
-
+    "fieldRequired": "এই ক্ষেত্রটি আবশ্যক",
+    "passwordTooShort": "পাসওয়ার্ডটি খুব সংক্ষিপ্ত",
+    "passwordsDoNotMatch": "পাসওয়ার্ডগুলি মেলেনি"
 }

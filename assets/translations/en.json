@@ -18,5 +18,7 @@
     "nameTooShort": "Name must be at least 3 characters",
     "invalidPhone": "Invalid phone number!",
     "onlyNumbersAllowed": "Only numbers are allowed!",
-    "fieldRequired": "This field is required"
+    "fieldRequired": "This field is required",
+    "passwordTooShort": "Password is too short",
+    "passwordsDoNotMatch": "Passwords do not match"
 }

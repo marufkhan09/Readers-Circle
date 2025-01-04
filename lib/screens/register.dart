@@ -112,6 +112,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return tr("fieldRequired");
+                  } else if (!RegExp(r'^(?:\+88|88)?01[3-9]\d{8}$')
+                      .hasMatch(value)) {
+                    return tr("invalidPhone");
                   }
                   return null;
                 },
@@ -166,6 +169,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         lName: _lastNameController.text,
                         email: _emailController.text,
                         phone: _phoneController.text,
+                        pass: _passwordController.text,
+                        cPass: _confirmController.text,
                         type: selectedType,
                       )
                           .then((value) {

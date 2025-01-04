@@ -66,15 +66,19 @@ class AuthProvider extends BaseApiService with ChangeNotifier {
     required String lName,
     required String email,
     required String phone,
-
-required String type,  }) async {
+    required String pass,
+    required String cPass,
+    required String type,
+  }) async {
     try {
       final response = await getDio()!.post(registerPath, data: {
         'first_name': fName,
         'last_name': lName,
         'email': email,
         'phone_number': phone,
-        'account_type': type
+        'account_type': type,
+        'password': pass,
+        'confirm_password': cPass
       });
 
       final responseJson = json.decode(response.toString());
