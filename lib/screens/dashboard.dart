@@ -72,16 +72,38 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "Books to Buy",
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                "Books to Buy",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, Routes.rentinglist);
+                                },
+                                child: const Text(
+                                  "See All",
+                                  style: TextStyle(
+                                      color: CustomColors.primaryLight2,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 8),
                           GridView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: provider.booksForRent.data!.length,
+                            itemCount: provider.booksForRent.data!.length < 4
+                                ? provider.booksForRent.data!.length
+                                : 4,
                             gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
@@ -95,16 +117,36 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             },
                           ),
                           const SizedBox(height: 16),
-                          const Text(
-                            "Books to Sell",
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                "Books to Sell",
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, Routes.sellinglist);
+                                },
+                                child: const Text(
+                                  "See All",
+                                  style: TextStyle(
+                                      color: CustomColors.primaryLight2,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 8),
                           GridView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: provider.booksForSale.data!.length,
+                            itemCount: provider.booksForSale.data!.length < 4
+                                ? provider.booksForSale.data!.length
+                                : 4,
                             gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
