@@ -13,25 +13,24 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  late PrefProvider provider;
+  late PrefProvider prefProvider;
   SharedPref sharedPref = SharedPref();
 
   initState() {
     super.initState();
-    provider = Provider.of<PrefProvider>(context, listen: false);
-    provider.getSavedLoginResponse();
+    prefProvider = Provider.of<PrefProvider>(context, listen: false);
+    prefProvider.getSavedLoginResponse();
   }
 
   @override
   Widget build(BuildContext context) {
-    var userData = provider.loginResponse.data;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
         iconTheme: const IconThemeData(color: Colors.white),
         centerTitle: true,
       ),
-      body: userData != null
+      body: context.watch<PrefProvider>().userResponseLoaded
           ? SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -47,7 +46,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   const SizedBox(height: 16),
                   Center(
                     child: Text(
-                      '${userData!.firstName} ${userData.lastName}',
+                      '${context.watch<PrefProvider>().loginResponse.data!.firstName} ${context.watch<PrefProvider>().loginResponse.data!.lastName}',
                       style: const TextStyle(
                           fontSize: 24, fontWeight: FontWeight.bold),
                     ),
@@ -55,19 +54,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   const SizedBox(height: 8),
                   const Divider(),
                   ListTile(
-                    leading: Icon(Icons.email),
+                    leading: const Icon(Icons.email),
                     title: const Text('Email'),
-                    subtitle: Text(userData.email!),
+                    subtitle: Text(context
+                        .watch<PrefProvider>()
+                        .loginResponse
+                        .data!
+                        .email!),
                   ),
                   ListTile(
                     leading: const Icon(Icons.phone),
                     title: const Text('Phone'),
-                    subtitle: Text(userData.phoneNumber!),
+                    subtitle: Text(context
+                        .watch<PrefProvider>()
+                        .loginResponse
+                        .data!
+                        .phoneNumber!),
                   ),
                   ListTile(
                     leading: const Icon(Icons.account_circle),
                     title: const Text('Account Type'),
-                    subtitle: Text(userData.accountType!),
+                    subtitle: Text(context
+                        .watch<PrefProvider>()
+                        .loginResponse
+                        .data!
+                        .accountType!),
                   ),
                   ListTile(
                     leading: const Icon(Icons.book),
@@ -75,7 +86,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        for (var preference in userData.preferences!)
+                        for (var preference in context
+                            .watch<PrefProvider>()
+                            .loginResponse
+                            .data!
+                            .preferences!)
                           Text('- $preference'),
                       ],
                     ),

@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:readers_circle/api/api_paths.dart';
 import 'package:readers_circle/api/base_api_service.dart';
-import 'package:readers_circle/api/helpers/response_status.dart';
 import 'package:readers_circle/models/login_response/login_response.dart';
 import 'package:readers_circle/models/prerenences_model/prerenences_model.dart';
 import 'package:readers_circle/utils/shared_pref.dart';
@@ -13,9 +12,6 @@ import 'package:readers_circle/utils/toast.dart';
 
 class PrefProvider extends BaseApiService with ChangeNotifier {
   final SharedPref sharedPref = SharedPref();
-
-  Status get status => _status;
-  Status _status = Status.none;
 
   late PreferenceModel _preferences;
 
@@ -31,6 +27,14 @@ class PrefProvider extends BaseApiService with ChangeNotifier {
 
   set loginResponse(LoginResponse value) {
     _loginResponse = value;
+  }
+
+  bool _userResponseLoaded = false;
+
+  bool get userResponseLoaded => _userResponseLoaded;
+
+  set userResponseLoaded(bool value) {
+    _userResponseLoaded = value;
   }
 
   //Preference list
@@ -81,7 +85,7 @@ class PrefProvider extends BaseApiService with ChangeNotifier {
     if (loginResponseString != null) {
       final jsonMap = json.decode(loginResponseString) as Map<String, dynamic>;
       _loginResponse = LoginResponse.fromJson(jsonMap);
-
+      _userResponseLoaded = true;
       notifyListeners();
       return _loginResponse;
     } else {

@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:readers_circle/api/base_api_service.dart';
-import 'package:readers_circle/api/helpers/response_status.dart';
 import 'package:readers_circle/models/book_detail_model/book_detail_model.dart';
 import 'package:readers_circle/models/book_model/book_model.dart';
 import 'package:readers_circle/utils/shared_pref.dart';
@@ -11,8 +10,6 @@ import 'package:readers_circle/utils/toast.dart';
 class BookProvider extends BaseApiService with ChangeNotifier {
   final SharedPref sharedPref = SharedPref();
 
-  Status get status => _status;
-  Status _status = Status.none;
 
   late BookModel _booksForRent;
 

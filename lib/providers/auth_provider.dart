@@ -4,16 +4,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:readers_circle/api/api_paths.dart';
 import 'package:readers_circle/api/base_api_service.dart';
-import 'package:readers_circle/api/helpers/response_status.dart';
 import 'package:readers_circle/models/login_response/login_response.dart';
 import 'package:readers_circle/utils/shared_pref.dart';
 import 'package:readers_circle/utils/toast.dart';
+import 'package:readers_circle/widgets/progressBar.dart';
 
 class AuthProvider extends BaseApiService with ChangeNotifier {
   final SharedPref sharedPref = SharedPref();
 
-  Status get status => _status;
-  Status _status = Status.none;
   late LoginResponse _loginResponse;
 
   LoginResponse get loginResponse => _loginResponse;
@@ -27,6 +25,7 @@ class AuthProvider extends BaseApiService with ChangeNotifier {
     required String email,
     required String password,
   }) async {
+    CustomProgressDialog.show(message: "Signing In...", isDismissible: false);
     try {
       // Make the API call
       final response = await getDio()!
@@ -43,18 +42,19 @@ class AuthProvider extends BaseApiService with ChangeNotifier {
       showMessageToast(message: _loginResponse.message!);
 
       // Update the status and notify listeners
-      _status = Status.success;
+
       notifyListeners();
       return response.statusCode!;
     } on DioException catch (e) {
       // Handle errors
       final responseJson = json.decode(e.response.toString());
       showMessageToast(message: responseJson["message"]);
-      _status = Status.failed;
+
       notifyListeners();
       return e.response!.statusCode!;
     } finally {
       // Always notify listeners at the end
+      CustomProgressDialog.hide();
       notifyListeners();
     }
   }
@@ -70,6 +70,7 @@ class AuthProvider extends BaseApiService with ChangeNotifier {
     required String cPass,
     required String type,
   }) async {
+    CustomProgressDialog.show(message: "Loading...", isDismissible: false);
     try {
       final response = await getDio()!.post(registerPath, data: {
         'first_name': fName,
@@ -83,16 +84,17 @@ class AuthProvider extends BaseApiService with ChangeNotifier {
 
       final responseJson = json.decode(response.toString());
       showMessageToast(message: responseJson["message"]);
-      _status = Status.success;
+
       notifyListeners();
       return response.statusCode!;
     } on DioException catch (e) {
       final responseJson = json.decode(e.response.toString());
       showMessageToast(message: responseJson["message"]);
-      _status = Status.failed;
+
       notifyListeners();
       return e.response!.statusCode!;
     } finally {
+      CustomProgressDialog.hide();
       notifyListeners(); // Notify listeners that the data has changed
     }
   }

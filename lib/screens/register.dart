@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:readers_circle/api/helpers/response_status.dart';
 import 'package:readers_circle/providers/auth_provider.dart';
 import 'package:readers_circle/utils/colors.dart';
 import 'package:readers_circle/utils/routes.dart';
@@ -181,9 +180,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       });
                     }
                   },
-                  child: provider.status == Status.loading
-                      ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text(
+                  child:const Text(
                           "register",
                           style: TextStyle(
                               fontSize: 16,
