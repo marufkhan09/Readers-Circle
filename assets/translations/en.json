@@ -20,5 +20,9 @@
     "onlyNumbersAllowed": "Only numbers are allowed!",
     "fieldRequired": "This field is required",
     "passwordTooShort": "Password is too short",
-    "passwordsDoNotMatch": "Passwords do not match"
+    "passwordsDoNotMatch": "Passwords do not match",
+    "both": "All",
+    "borrower": "Borrower",
+    "renter": "Renter",
+    "confirmPassword": "Confirm Password"
 }

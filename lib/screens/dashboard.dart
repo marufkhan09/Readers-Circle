@@ -4,6 +4,7 @@ import 'package:readers_circle/models/book_model/datum.dart';
 import 'package:readers_circle/providers/book_provider.dart';
 import 'package:readers_circle/utils/colors.dart';
 import 'package:readers_circle/utils/routes.dart';
+import 'package:readers_circle/widgets/progressBar.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -16,6 +17,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   late BookProvider bookProvider;
   @override
   void initState() {
+
     super.initState();
     bookProvider = Provider.of<BookProvider>(context, listen: false);
     bookProvider.booksForRentLoaded = false;
@@ -45,7 +47,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              child: TextField(
+              child: TextField(onTap: (){
+                Navigator.pushNamed(context, Routes.search);
+              },
                 decoration: InputDecoration(
                   hintText: "Search for books...",
                   prefixIcon: const Icon(Icons.search),

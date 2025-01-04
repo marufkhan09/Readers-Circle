@@ -6,6 +6,7 @@ import 'package:readers_circle/screens/preferences.dart';
 import 'package:readers_circle/screens/profile.dart';
 import 'package:readers_circle/screens/register.dart';
 import 'package:readers_circle/screens/rentlist.dart';
+import 'package:readers_circle/screens/search.dart';
 import 'package:readers_circle/screens/selling_list.dart';
 import 'package:readers_circle/screens/splash.dart';
 import 'package:readers_circle/utils/routes.dart';
@@ -22,4 +23,5 @@ var routes = {
       ),
   Routes.sellinglist: (context) => const SellingListScreen(),
   Routes.rentinglist: (context) => const RentListScreen(),
+  Routes.search: (context) => const SearchPage(),
 };

@@ -28,7 +28,13 @@ class CustomProgressDialog {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  const SizedBox(
+                    width: 30,
+                  ),
                   const CircularProgressIndicator(),
+                  const SizedBox(
+                    width: 10,
+                  ),
                   Text(
                     message,
                     textAlign: TextAlign.left,

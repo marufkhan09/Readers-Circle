@@ -20,5 +20,9 @@
     "onlyNumbersAllowed": "শুধু সংখ্যা ব্যবহার করা যাবে!",
     "fieldRequired": "এই ক্ষেত্রটি আবশ্যক",
     "passwordTooShort": "পাসওয়ার্ডটি খুব সংক্ষিপ্ত",
-    "passwordsDoNotMatch": "পাসওয়ার্ডগুলি মেলেনি"
+    "passwordsDoNotMatch": "পাসওয়ার্ডগুলি মেলেনি",
+    "both": "সব",
+    "borrower": "ধারকারী",
+    "renter": "ভাড়াটিয়া",
+    "confirmPassword": "পাসওয়ার্ড নিশ্চিত করুন"
 }
