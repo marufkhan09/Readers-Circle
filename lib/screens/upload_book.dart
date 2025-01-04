@@ -23,15 +23,24 @@ class _UploadBookScreenState extends State<UploadBookScreen> {
   final _priceController = TextEditingController();
   late PrefProvider prefProvider;
   int? categoryIndex; // Updated to nullable
-  int? subcategoryIndex;
+  List<int> selectedSubcategories = [];
   int catId = 0;
-  int subCatId = 0;
 
   @override
   void initState() {
     super.initState();
     prefProvider = Provider.of<PrefProvider>(context, listen: false);
     prefProvider.getPreferences();
+  }
+
+  void _toggleSubcategorySelection(int index) {
+    setState(() {
+      if (selectedSubcategories.contains(index)) {
+        selectedSubcategories.remove(index);
+      } else {
+        selectedSubcategories.add(index);
+      }
+    });
   }
 
   @override
@@ -116,7 +125,8 @@ class _UploadBookScreenState extends State<UploadBookScreen> {
                               setState(() {
                                 categoryIndex = newValue;
                                 catId = categoryIndex! + 1;
-                                subcategoryIndex = null; // Reset subcategory
+                                selectedSubcategories
+                                    .clear(); // Reset subcategories
                               });
                             },
                           ),
@@ -124,50 +134,42 @@ class _UploadBookScreenState extends State<UploadBookScreen> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(color: CustomColors.black),
-                          borderRadius: BorderRadius.circular(5)),
-                      child: Card(
-                        elevation: 0.0,
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<int>(
-                            value: subcategoryIndex,
-                            hint: const Text("Choose a subcategory"),
-                            isExpanded: true,
-                            items: categoryIndex != null
-                                ? List.generate(
-                                    context
-                                        .watch<PrefProvider>()
-                                        .preferences
-                                        .data![categoryIndex!]
-                                        .subcategories!
-                                        .length,
-                                    (index) {
-                                      return DropdownMenuItem<int>(
-                                        value: index,
-                                        child: Text(
-                                          context
-                                              .watch<PrefProvider>()
-                                              .preferences
-                                              .data![categoryIndex!]
-                                              .subcategories![index]
-                                              .toString(),
-                                        ),
-                                      );
-                                    },
-                                  )
-                                : [],
-                            onChanged: (int? newValue) {
-                              setState(() {
-                                subcategoryIndex = newValue;
-                                subCatId = subcategoryIndex! + 1;
-                              });
-                            },
-                          ),
+                    if (categoryIndex != null)
+                      Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(color: CustomColors.black),
+                            borderRadius: BorderRadius.circular(5)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: const Text("Choose subcategories")
+                                  .tr(), // Header for subcategories
+                            ),
+                            ...context
+                                .watch<PrefProvider>()
+                                .preferences
+                                .data![categoryIndex!]
+                                .subcategories!
+                                .asMap()
+                                .entries
+                                .map(
+                              (entry) {
+                                final index = entry.key;
+                                final subcategory = entry.value.toString();
+                                return CheckboxListTile(
+                                  title: Text(subcategory),
+                                  value: selectedSubcategories.contains(index),
+                                  onChanged: (_) {
+                                    _toggleSubcategorySelection(index);
+                                  },
+                                );
+                              },
+                            ).toList(),
+                          ],
                         ),
                       ),
-                    ),
                     const SizedBox(height: 20),
                   ],
                 ),
@@ -181,7 +183,7 @@ class _UploadBookScreenState extends State<UploadBookScreen> {
                       );
                       return;
                     }
-                    if (subcategoryIndex == null) {
+                    if (selectedSubcategories.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text(tr("selectSubcategory"))),
                       );
@@ -189,18 +191,18 @@ class _UploadBookScreenState extends State<UploadBookScreen> {
                     }
 
                     // Perform upload logic here
-                    print("Title: ${_titleController.text}");
-                    print("Author: ${_authorController.text}");
-                    print("Price: ${_priceController.text}");
-                    print("Category ID: $categoryIndex");
-                    print("Subcategory ID: $subcategoryIndex");
+                    log("Title: ${_titleController.text}");
+                    log("Author: ${_authorController.text}");
+                    log("Price: ${_priceController.text}");
+                    log("Category ID: $catId");
+                    log("Selected Subcategory IDs: ${selectedSubcategories.join(', ')}");
                   }
                 },
                 child: const Text(
                   "Upload Book",
                   style: TextStyle(color: Colors.white),
                 ).tr(),
-              )
+              ),
             ],
           ),
         ),
