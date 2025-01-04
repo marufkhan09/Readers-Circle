@@ -21,10 +21,14 @@ class _UploadBookScreenState extends State<UploadBookScreen> {
   final _titleController = TextEditingController();
   final _authorController = TextEditingController();
   final _priceController = TextEditingController();
+  final _rentPerDayController = TextEditingController();
   late PrefProvider prefProvider;
   int? categoryIndex; // Updated to nullable
   List<int> selectedSubcategories = [];
   int catId = 0;
+  bool isForRent = true;
+  bool isAvailableForRent = true;
+  bool isAvailableToBuy = true;
 
   @override
   void initState() {
@@ -170,7 +174,133 @@ class _UploadBookScreenState extends State<UploadBookScreen> {
                           ],
                         ),
                       ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
+                    // Variables to track the selected values for each option
+
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // For Rent
+                        const Text(
+                          "For Rent:",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: RadioListTile<bool>(
+                                title: const Text("Yes"),
+                                value: true,
+                                groupValue: isForRent,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isForRent = value!;
+                                  });
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              child: RadioListTile<bool>(
+                                title: const Text("No"),
+                                value: false,
+                                groupValue: isForRent,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isForRent = value!;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+
+                        // Available for Rent
+                        const Text(
+                          "Available for Rent:",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: RadioListTile<bool>(
+                                title: const Text("Yes"),
+                                value: true,
+                                groupValue: isAvailableForRent,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isAvailableForRent = value!;
+                                  });
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              child: RadioListTile<bool>(
+                                title: const Text("No"),
+                                value: false,
+                                groupValue: isAvailableForRent,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isAvailableForRent = value!;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+
+                        // Available to Buy
+                        const Text(
+                          "Available to Buy:",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: RadioListTile<bool>(
+                                title: const Text("Yes"),
+                                value: true,
+                                groupValue: isAvailableToBuy,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isAvailableToBuy = value!;
+                                  });
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              child: RadioListTile<bool>(
+                                title: const Text("No"),
+                                value: false,
+                                groupValue: isAvailableToBuy,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isAvailableToBuy = value!;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        TextInput(
+                          controller: _rentPerDayController,
+                          hint: tr("rentPerDay"),
+                          keyboardType: TextInputType.number,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return tr("fieldRequired");
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                      ],
+                    ),
                   ],
                 ),
               ),
