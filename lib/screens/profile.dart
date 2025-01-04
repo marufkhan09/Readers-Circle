@@ -28,14 +28,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () {
-              // Handle logout action
-            },
-          ),
-        ],
+        iconTheme: const IconThemeData(color: Colors.white),
+        centerTitle: true,
       ),
       body: userData != null
           ? SingleChildScrollView(
@@ -47,7 +41,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: CircleAvatar(
                       radius: 50,
                       backgroundImage: AssetImage(
-                          'assets/profile.png'), // Add a profile picture asset
+                          'assets/images/profile.png'), // Add a profile picture asset
                     ),
                   ),
                   const SizedBox(height: 16),

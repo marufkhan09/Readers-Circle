@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:readers_circle/api/base_api_service.dart';
 import 'package:readers_circle/api/helpers/response_status.dart';
+import 'package:readers_circle/models/book_detail_model/book_detail_model.dart';
 import 'package:readers_circle/models/book_model/book_model.dart';
 import 'package:readers_circle/utils/shared_pref.dart';
 import 'package:readers_circle/utils/toast.dart';
@@ -37,7 +38,7 @@ class BookProvider extends BaseApiService with ChangeNotifier {
     _booksForRentLoaded = value;
   }
 
-  bool _booksForSaleLoaded  =false;
+  bool _booksForSaleLoaded = false;
 
   bool get booksForSaleLoaded => _booksForSaleLoaded;
 
@@ -45,10 +46,27 @@ class BookProvider extends BaseApiService with ChangeNotifier {
     _booksForSaleLoaded = value;
   }
 
+  BookDetailModel _bookDetail = BookDetailModel();
+
+  BookDetailModel get bookDetail => _bookDetail;
+
+  set bookDetail(BookDetailModel value) {
+    _bookDetail = value;
+  }
+
+  bool _bookDetaillLoaded = false;
+
+  bool get bookDetaillLoaded => _bookDetaillLoaded;
+
+  set bookDetaillLoaded(bool value) {
+    _bookDetaillLoaded = value;
+  }
+
 //books for rent
   Future<BookModel> fetchBooksForRent() async {
     try {
-      final response = await getDio()!.get("books",queryParameters: {"for_rent": "true"});
+      final response =
+          await getDio()!.get("books", queryParameters: {"for_rent": "true"});
       BookModel responseJson = BookModel.fromJson(response.data);
       _booksForRent = responseJson;
       _booksForRentLoaded = true;
@@ -67,7 +85,8 @@ class BookProvider extends BaseApiService with ChangeNotifier {
 
   Future<BookModel> fetchBooksForSale() async {
     try {
-      final response = await getDio()!.get("books",queryParameters: {"for_sale": "true"});
+      final response =
+          await getDio()!.get("books", queryParameters: {"for_sale": "true"});
       BookModel responseJson = BookModel.fromJson(response.data);
       _booksForSale = responseJson;
       _booksForSaleLoaded = true;
@@ -79,6 +98,25 @@ class BookProvider extends BaseApiService with ChangeNotifier {
       notifyListeners();
       showMessageToast(message: "Error fetching data");
       return _booksForSale;
+    }
+  }
+
+  //book details
+
+  Future<BookDetailModel> bookDetails({required String id}) async {
+    try {
+      final response = await getDio()!.get("books/$id");
+      BookDetailModel responseJson = BookDetailModel.fromJson(response.data);
+      _bookDetail = responseJson;
+      _bookDetaillLoaded = true;
+      notifyListeners();
+      return _bookDetail;
+    } on DioException catch (e) {
+      _bookDetail = BookDetailModel();
+      debugPrint("Error: ${e.message}");
+      notifyListeners();
+      showMessageToast(message: "Error fetching data");
+      return _bookDetail;
     }
   }
 }

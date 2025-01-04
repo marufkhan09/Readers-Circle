@@ -127,53 +127,60 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _buildBookCard(BookDatum book) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: ClipRRect(
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(8)),
-              child: Image.network(
-                "https://plus.unsplash.com/premium_photo-1667251760504-096946b820af?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Make sure to add the cover image URL in the Book model
-                fit: BoxFit.cover,
-                width: double.infinity,
+    return InkWell(
+      onTap: (){
+        Navigator.pushNamed(context, Routes.bookDetail, arguments: book.id.toString());
+      },
+      child: Card(
+      
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: ClipRRect(
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(8)),
+                child: Image.network(
+                  "https://plus.unsplash.com/premium_photo-1667251760504-096946b820af?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Make sure to add the cover image URL in the Book model
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              book.title!,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                book.title!,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Text(
-              book.author!,
-              style: const TextStyle(color: Colors.grey),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Text(
+                book.author!,
+                style: const TextStyle(color: Colors.grey),
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              onPressed: () {
-                // Handle buy/sell logic
-              },
-              child: Text(book.availableForSell!
-                  ? "Buy - \$${book.price}"
-                  : "Sell - \$${book.price}"),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  // Handle buy/sell logic
+                },
+                child: Text(book.availableForSell!
+                    ? "Buy - \$${book.price}"
+                    : "Sell - \$${book.price}"),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -125,7 +125,6 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                             .toString())
                     .then((val) {
                   if (val == 200 || val == 201) {
-                    
                     Navigator.pushReplacementNamed(context, Routes.dashboard);
                   }
                 });

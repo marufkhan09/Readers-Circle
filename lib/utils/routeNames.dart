@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:readers_circle/screens/book_details.dart';
 import 'package:readers_circle/screens/dashboard.dart';
 import 'package:readers_circle/screens/login.dart';
 import 'package:readers_circle/screens/preferences.dart';
@@ -13,4 +15,7 @@ var routes = {
   Routes.preferences: (context) => const PreferencesScreen(),
   Routes.dashboard: (context) => const DashboardScreen(),
   Routes.profile: (context) => const ProfileScreen(),
+  Routes.bookDetail: (context) => BookDetailsScreen(
+        id: ModalRoute.of(context)!.settings.arguments as String,
+      ),
 };

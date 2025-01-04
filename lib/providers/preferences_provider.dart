@@ -81,7 +81,7 @@ class PrefProvider extends BaseApiService with ChangeNotifier {
     if (loginResponseString != null) {
       final jsonMap = json.decode(loginResponseString) as Map<String, dynamic>;
       _loginResponse = LoginResponse.fromJson(jsonMap);
-      
+
       notifyListeners();
       return _loginResponse;
     } else {
