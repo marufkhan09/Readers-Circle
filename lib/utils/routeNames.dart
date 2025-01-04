@@ -9,6 +9,7 @@ import 'package:readers_circle/screens/rentlist.dart';
 import 'package:readers_circle/screens/search.dart';
 import 'package:readers_circle/screens/selling_list.dart';
 import 'package:readers_circle/screens/splash.dart';
+import 'package:readers_circle/screens/upload_book.dart';
 import 'package:readers_circle/utils/routes.dart';
 
 var routes = {
@@ -24,4 +25,5 @@ var routes = {
   Routes.sellinglist: (context) => const SellingListScreen(),
   Routes.rentinglist: (context) => const RentListScreen(),
   Routes.search: (context) => const SearchPage(),
+  Routes.uploadBook: (context) => const UploadBookScreen(),
 };

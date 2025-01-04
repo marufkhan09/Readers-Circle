@@ -9,4 +9,5 @@ class Routes {
   static const String sellinglist = '/sellinglist';
   static const String rentinglist = '/rentinglist';
    static const String search = '/search';
+   static const String uploadBook = '/uploadBook';
 }

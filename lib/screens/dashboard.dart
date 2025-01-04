@@ -1,10 +1,13 @@
+import 'package:carousel_slider/carousel_options.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:readers_circle/models/book_model/datum.dart';
 import 'package:readers_circle/providers/book_provider.dart';
+import 'package:readers_circle/providers/preferences_provider.dart';
 import 'package:readers_circle/utils/colors.dart';
 import 'package:readers_circle/utils/routes.dart';
-import 'package:readers_circle/widgets/progressBar.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -15,11 +18,15 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   late BookProvider bookProvider;
+  late PrefProvider prefProvider;
+  List<String> bookImages = ["1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg"];
+
   @override
   void initState() {
-
     super.initState();
     bookProvider = Provider.of<BookProvider>(context, listen: false);
+    prefProvider = Provider.of<PrefProvider>(context, listen: false);
+    prefProvider.getSavedLoginResponse();
     bookProvider.booksForRentLoaded = false;
     bookProvider.booksForSaleLoaded = false;
     bookProvider.fetchBooksForRent();
@@ -30,6 +37,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          title: const Text(
+            "Welcome",
+            style: TextStyle(fontSize: 20),
+          ).tr(),
           actions: [
             IconButton(
               icon: const Icon(
@@ -47,9 +58,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              child: TextField(onTap: (){
-                Navigator.pushNamed(context, Routes.search);
-              },
+              child: TextField(
+                onTap: () {
+                  Navigator.pushNamed(context, Routes.search);
+                },
                 decoration: InputDecoration(
                   hintText: "Search for books...",
                   prefixIcon: const Icon(Icons.search),
@@ -60,22 +72,86 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   filled: true,
                   fillColor: Colors.grey[200],
                 ),
-                onChanged: (query) {
-                  // Implement search logic
-                },
+               
               ),
             ),
           ),
         ),
         body: Consumer<BookProvider>(
           builder: (BuildContext context, provider, Widget? child) {
-            return provider.booksForRentLoaded && provider.booksForSaleLoaded
+            return provider.booksForRentLoaded &&
+                    provider.booksForSaleLoaded &&
+                    context.watch<PrefProvider>().userResponseLoaded
                 ? SingleChildScrollView(
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          CarouselSlider(
+                            items: bookImages.map((imageUrl) {
+                              return Builder(
+                                builder: (BuildContext context) {
+                                  return Image.asset(
+                                    "assets/images/$imageUrl",
+                                    fit: BoxFit.fill,
+                                  );
+                                },
+                              );
+                            }).toList(),
+                            options: CarouselOptions(
+                              height: 200.0,
+                              enlargeCenterPage: true,
+                              autoPlay: true,
+                              aspectRatio: 16 / 9,
+                              autoPlayCurve: Curves.fastOutSlowIn,
+                              enableInfiniteScroll: true,
+                              autoPlayAnimationDuration:
+                                  const Duration(milliseconds: 800),
+                              viewportFraction: 0.8,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(context, Routes.uploadBook);
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(12),
+                              height: 100,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: CustomColors.primaryLight3),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.7,
+                                    child: const Text(
+                                      "Uploading a new book? Click here to upload",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  const Icon(
+                                    Icons.arrow_forward_ios,
+                                    color: Colors.white,
+                                    size: 24,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 16,
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
