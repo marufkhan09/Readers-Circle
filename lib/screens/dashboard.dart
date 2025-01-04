@@ -128,13 +128,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Widget _buildBookCard(BookDatum book) {
     return InkWell(
-      onTap: (){
-        Navigator.pushNamed(context, Routes.bookDetail, arguments: book.id.toString());
+      onTap: () {
+        Navigator.pushNamed(context, Routes.bookDetail,
+            arguments: book.id.toString());
       },
       child: Card(
-      
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -142,8 +141,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               child: ClipRRect(
                 borderRadius:
                     const BorderRadius.vertical(top: Radius.circular(8)),
-                child: Image.network(
-                  "https://plus.unsplash.com/premium_photo-1667251760504-096946b820af?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Make sure to add the cover image URL in the Book model
+                child: Image.asset(
+                  "assets/images/book1.jpeg", // Make sure to add the cover image URL in the Book model
                   fit: BoxFit.cover,
                   width: double.infinity,
                 ),

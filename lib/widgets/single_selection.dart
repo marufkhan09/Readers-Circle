@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:readers_circle/utils/colors.dart';
 
 class SingleChoice extends StatefulWidget {
-  final List<dynamic>? options;
+  final List<dynamic>? options;final ValueChanged<String>? onChanged;
   const SingleChoice({
     super.key,
     required this.options,
+    this.onChanged,
   });
 
   @override
@@ -14,6 +15,14 @@ class SingleChoice extends StatefulWidget {
 
 class _SingleChoiceState extends State<SingleChoice> {
   String selectedValue = "";
+
+  @override
+  initState() {
+    selectedValue = widget.options!.elementAt(0);
+   
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,26 +41,24 @@ class _SingleChoiceState extends State<SingleChoice> {
             style: const TextStyle(color: Colors.black, fontSize: 13),
             iconSize: 30.0,
             dropdownColor: CustomColors.broder,
-            items: List.generate(
-                widget.options!.length,
-                (index) => DropdownMenuItem<String>(
-                      value: selectedValue.isNotEmpty
-                          ? selectedValue
-                          : widget.options!.elementAt(0).title,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          widget.options!.elementAt(index).title!,
-                          style: const TextStyle(fontSize: 15),
-                        ),
-                      ),
-                    )),
-            onChanged: (value) {
-              setState(
-                () {
-                  selectedValue = value!;
-                },
+            value: selectedValue, // Bind the selected value here
+            items: widget.options!.map((option) {
+              return DropdownMenuItem<String>(
+                value: option, // Use the actual option as the value
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    option.toString().toUpperCase(),
+                    style: const TextStyle(fontSize: 15, color: Colors.black),
+                  ),
+                ),
               );
+            }).toList(),
+            onChanged: (value) {
+              setState(() {
+                selectedValue = value!;
+                widget.onChanged!(selectedValue);
+              });
             },
           ),
         ),

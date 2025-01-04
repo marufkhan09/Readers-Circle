@@ -24,13 +24,13 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
   SharedPref sharedPref = SharedPref();
   late AuthProvider provider;
-
+  bool _obscurePassword = true;
   @override
   void initState() {
     super.initState();
-    // Remove the provider initialization from here
-    _emailController.text = "masuda@gmail.com";
-    _passwordController.text = "123456Ma#";
+    // // Remove the provider initialization from here
+    // _emailController.text = "masuda@gmail.com";
+    // _passwordController.text = "123456Ma#";
   }
 
   preferenceCheck() async {
@@ -40,6 +40,12 @@ class _LoginScreenState extends State<LoginScreen> {
     } else {
       Navigator.pushReplacementNamed(context, Routes.preferences);
     }
+  }
+
+  void _togglePasswordVisibility() {
+    setState(() {
+      _obscurePassword = !_obscurePassword;
+    });
   }
 
   @override
@@ -106,28 +112,37 @@ class _LoginScreenState extends State<LoginScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       TextInput(
-                        onDone: (value) {
-                          _emailController.text = value!;
-                        },
-                        textInputAction: TextInputAction.done,
-                        keyboardType: TextInputType.emailAddress,
+                        controller: _emailController,
                         hint: tr("emailHint"),
-                        validateOnInteraction: true,
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return tr("fieldRequired");
+                          }
+                          if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                            return tr("invalidEmail");
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(
                         height: 10,
                       ),
                       PasswordInput(
-                        onDone: (value) {
-                          _passwordController.text = value!;
-                        },
-                        textInputAction: TextInputAction.done,
+                        controller: _passwordController,
                         hint: tr("passwordHint"),
-                        validateOnInteraction: true, // Validate while typing
-                        obscureText: true, // Password is initially hidden
-                        showPasswordToggle:
-                            true, // Show/hide password toggle button
-                      )
+                        obscureText: _obscurePassword,
+                        togglePasswordVisibility: _togglePasswordVisibility,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return tr("fieldRequired");
+                          }
+                          if (value.length < 6) {
+                            return tr("passwordTooShort");
+                          }
+                          return null;
+                        },
+                      ),
                     ],
                   ),
                 ),

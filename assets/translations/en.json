@@ -12,5 +12,11 @@
     "passwordHint": "Password",
     "fName": "First Name",
     "lName": "Last Name",
-    "phone": "Phone Number"
+    "phone": "Phone Number",
+    "fieldEmpty": "This field can't be empty",
+    "invalidEmail": "Invalid email address!",
+    "nameTooShort": "Name must be at least 3 characters",
+    "invalidPhone": "Invalid phone number!",
+    "onlyNumbersAllowed": "Only numbers are allowed!",
+    "fieldRequired": "This field is required"
 }
