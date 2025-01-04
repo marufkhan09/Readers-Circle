@@ -37,6 +37,14 @@ class PrefProvider extends BaseApiService with ChangeNotifier {
     _userResponseLoaded = value;
   }
 
+  bool _preferencesLoaded = false;
+
+  bool get preferencesLoaded => _preferencesLoaded;
+
+  set preferencesLoaded(bool value) {
+    _preferencesLoaded = value;
+  }
+
   //Preference list
 
   Future<PreferenceModel> getPreferences() async {
@@ -46,6 +54,7 @@ class PrefProvider extends BaseApiService with ChangeNotifier {
       PreferenceModel? preferencesResponse =
           PreferenceModel.fromJson(response.data);
       _preferences = preferencesResponse;
+      _preferencesLoaded = true;
       notifyListeners();
 
       return _preferences;

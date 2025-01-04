@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +11,6 @@ import 'package:readers_circle/utils/toast.dart';
 
 class BookProvider extends BaseApiService with ChangeNotifier {
   final SharedPref sharedPref = SharedPref();
-
 
   late BookModel _booksForRent;
 
@@ -117,34 +118,25 @@ class BookProvider extends BaseApiService with ChangeNotifier {
     }
   }
 
+  Future<int> uploadBookCall({
+    required Map<String, dynamic> data,
+  }) async {
+    try {
+      final response = await getDio()!.post("books", data: data);
 
+      final responseJson = json.decode(response.toString());
+      showMessageToast(message: responseJson["message"]);
 
+      notifyListeners();
+      return response.statusCode!;
+    } on DioException catch (e) {
+      final responseJson = json.decode(e.response.toString());
+      showMessageToast(message: responseJson["message"]);
 
-  // Future<int> registerCall({
-  //   required String id
-  // }) async {
-  //   try {
-  //     final response = await getDio()!.post("books/$id/borrow", data: {
-  //       'first_name': fName,
-  //       'last_name': lName,
-  //       'email': email,
-  //       'phone_number': phone,
-  //       'account_type': "both"
-  //     });
-
-  //     final responseJson = json.decode(response.toString());
-  //     showMessageToast(message: responseJson["message"]);
-  //     _status = Status.success;
-  //     notifyListeners();
-  //     return response.statusCode!;
-  //   } on DioException catch (e) {
-  //     final responseJson = json.decode(e.response.toString());
-  //     showMessageToast(message: responseJson["message"]);
-  //     _status = Status.failed;
-  //     notifyListeners();
-  //     return e.response!.statusCode!;
-  //   } finally {
-  //     notifyListeners(); // Notify listeners that the data has changed
-  //   }
-  // }
+      notifyListeners();
+      return e.response!.statusCode!;
+    } finally {
+      notifyListeners(); // Notify listeners that the data has changed
+    }
+  }
 }
