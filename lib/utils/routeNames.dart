@@ -6,6 +6,7 @@ import 'package:readers_circle/screens/borrowlist.dart';
 import 'package:readers_circle/screens/checkout.dart';
 import 'package:readers_circle/screens/dashboard.dart';
 import 'package:readers_circle/screens/login.dart';
+import 'package:readers_circle/screens/order_list.dart';
 import 'package:readers_circle/screens/preferences.dart';
 import 'package:readers_circle/screens/profile.dart';
 import 'package:readers_circle/screens/register.dart';
@@ -38,5 +39,5 @@ var routes = {
   Routes.checkout: (context) => CheckoutPage(
       args: ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>),
   Routes.borrowlist: (context) => const BorrowListScreen(),
-  // Routes.profile: (context) => const (),
+  Routes.orderist: (context) => const OrderListScreen(),
 };

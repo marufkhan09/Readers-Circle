@@ -46,7 +46,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             title: const Text('Order List'),
             onTap: () {
               Navigator.pop(context); // Close the drawer
-              Navigator.pushNamed(context, '/order-list'); // Navigate
+              Navigator.pushNamed(context, Routes.orderist); // Navigate
             },
           ),
           const Spacer(),
