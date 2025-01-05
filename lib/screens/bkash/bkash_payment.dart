@@ -14,15 +14,12 @@ class PaymentScreen extends StatefulWidget {
 
 class _PaymentScreenState extends State<PaymentScreen> {
   final _mobileController = TextEditingController();
-  String invoice = "";
-  String amount = "";
+
   final _formKey = GlobalKey<FormState>();
   bool paymentSuccess = false;
+
   @override
   void initState() {
-    invoice = widget.data['invoice'];
-    amount = widget.data['amount'];
-
     super.initState();
   }
 
@@ -77,25 +74,26 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                           Icons.shopping_cart,
                                           color: Colors.brown.shade200,
                                         )),
-                                    const Column(
+                                    Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
+                                        const Text(
                                           "Readers Circle",
                                           style: TextStyle(
                                               color: Colors.grey, fontSize: 10),
                                         ),
                                         Text(
-                                          "Invoice",
-                                          style: TextStyle(
+                                          "Invoice" +
+                                              "${widget.data["invoice"]}",
+                                          style: const TextStyle(
                                               color: Colors.grey, fontSize: 10),
                                         )
                                       ],
                                     )
                                   ],
                                 ),
-                                Text("৳$amount",
+                                Text("৳${widget.data["totalPrice"]}",
                                     style: const TextStyle(
                                         color: Colors.black,
                                         fontSize: 20,

@@ -1,8 +1,10 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:readers_circle/utils/routes.dart';
 import 'package:readers_circle/widgets/text_field.dart';
+import 'dart:math';
+import 'dart:developer' as dev;
 
 class CheckoutPage extends StatefulWidget {
   final dynamic args;
@@ -32,7 +34,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
     from = widget.args["from"];
     _pricePerDay =
         book.data!.rentPerHour!; // Assuming rentPerHour is actually rentPerDay
-    log(_pricePerDay.toString());
+    dev.log(_pricePerDay.toString());
     super.initState();
   }
 
@@ -57,14 +59,27 @@ class _CheckoutPageState extends State<CheckoutPage> {
       int days = _endDate!.difference(_startDate!).inDays + 1;
       double totalPrice = days * _pricePerDay;
 
-      log('Address: $address');
-      log('Street: $street');
-      log('District: $district');
-      log('Post Code: $postCode');
-      log('Start Date: ${DateFormat('yyyy-MM-dd').format(_startDate!)}');
-      log('End Date: ${DateFormat('yyyy-MM-dd').format(_endDate!)}');
-      log('Total Days: $days');
-      log('Total Price: ৳$totalPrice');
+      // Generate a random 10-digit invoice number
+      String invoiceNumber = (Random().nextInt(900000) + 100000).toString();
+
+      // Create a map with the collected data
+      Map<String, dynamic> formData = {
+        'address[name]': address,
+        'address[street_no]': street,
+        'address[district]': district,
+        'address[post_code]': postCode,
+        'start_datetime': DateFormat('yyyy-MM-dd').format(_startDate!),
+        'end_datetime': DateFormat('yyyy-MM-dd').format(_endDate!),
+        'totalDays': days,
+        'totalPrice': totalPrice,
+        'invoice': invoiceNumber,
+      };
+
+      dev.log(formData.toString());
+
+      Navigator.pushNamed(context, Routes.bkash, arguments: formData);
+
+      // You can now use the formData map as needed
     }
   }
 
@@ -113,7 +128,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
               children: <Widget>[
                 TextInput(
                   controller: _addressController,
-                  hint: "Address",
+                  hint: "Address Name",
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your address';
@@ -185,6 +200,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             ),
                           ),
                           const SizedBox(height: 20),
+                          Text(
+                            "Rent Per day: ৳$_pricePerDay",
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                           Text(
                             _startDate != null && _endDate != null
                                 ? 'Total Price: ৳${(_endDate!.difference(_startDate!).inDays + 1) * _pricePerDay}'
