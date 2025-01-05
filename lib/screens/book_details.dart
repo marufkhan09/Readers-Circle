@@ -1,7 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:readers_circle/providers/book_provider.dart';
 import 'package:readers_circle/utils/colors.dart';
+import 'package:readers_circle/utils/routes.dart';
+import 'package:readers_circle/utils/toast.dart';
 
 class BookDetailsScreen extends StatefulWidget {
   final String id;
@@ -70,7 +74,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                   const SizedBox(height: 16),
 
                   // SECTION 7: Book Now Button
-                  _buildBookNowButton(),
+                  _buildBookNowButton(book),
                 ],
               ),
             )
@@ -243,25 +247,57 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
   }
 
   // Section 7: Book Now Button
-  Widget _buildBookNowButton() {
-    return Center(
-      child: ElevatedButton(
-        onPressed: () {
-          // Add booking logic here
-        },
-        style: ElevatedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
-          textStyle: const TextStyle(fontSize: 18),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
+  Widget _buildBookNowButton(book) {
+    return Row(
+      children: [
+        Expanded(
+          child: ElevatedButton(
+            onPressed: () {
+              // Add booking logic here
+              log("Available");
+              Navigator.pushNamed(context,Routes.checkout);
+              if (book.data!.availableForRent!) {
+              } else {
+                showMessageToast(message: "Not Available for rent now!!");
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+              textStyle: const TextStyle(fontSize: 18),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              backgroundColor: CustomColors.primaryLight,
+            ),
+            child: const Text(
+              'Rent Now',
+              style: TextStyle(color: Colors.white),
+            ),
           ),
-          backgroundColor: CustomColors.primaryLight,
         ),
-        child: const Text(
-          'Book Now',
-          style: TextStyle(color: Colors.white),
+        const SizedBox(
+          width: 10,
         ),
-      ),
+        Expanded(
+          child: ElevatedButton(
+            onPressed: () {
+              // Add booking logic here
+            },
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+              textStyle: const TextStyle(fontSize: 18),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              backgroundColor: CustomColors.primaryLight,
+            ),
+            child: const Text(
+              'Book Now',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

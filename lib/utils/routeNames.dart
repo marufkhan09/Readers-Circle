@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:readers_circle/screens/bkash/bkash_payment.dart';
+import 'package:readers_circle/screens/bkash/confirmation_page.dart';
 import 'package:readers_circle/screens/book_details.dart';
+import 'package:readers_circle/screens/checkout.dart';
 import 'package:readers_circle/screens/dashboard.dart';
 import 'package:readers_circle/screens/login.dart';
 import 'package:readers_circle/screens/preferences.dart';
@@ -26,4 +29,11 @@ var routes = {
   Routes.rentinglist: (context) => const RentListScreen(),
   Routes.search: (context) => const SearchPage(),
   Routes.uploadBook: (context) => const UploadBookScreen(),
+  Routes.bkash: (context) => PaymentScreen(
+        data:
+            ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>,
+      ),
+  Routes.confirmation: (context) => const ConfirmationScreen(),
+  Routes.checkout: (context) =>
+      CheckoutPage(book: ModalRoute.of(context)!.settings.arguments as dynamic),
 };

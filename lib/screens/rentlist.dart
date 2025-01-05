@@ -27,7 +27,7 @@ class _RentListScreenState extends State<RentListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: tr('Books For Sale'),
+        title: tr('Books For Rent'),
       ),
       body: context.watch<BookProvider>().booksForRentLoaded
           ? ListView.builder(

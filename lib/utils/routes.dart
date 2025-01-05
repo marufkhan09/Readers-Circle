@@ -8,6 +8,9 @@ class Routes {
   static const String bookDetail = '/bookDetail';
   static const String sellinglist = '/sellinglist';
   static const String rentinglist = '/rentinglist';
-   static const String search = '/search';
-   static const String uploadBook = '/uploadBook';
+  static const String search = '/search';
+  static const String uploadBook = '/uploadBook';
+  static const String bkash = '/bkash';
+  static const String confirmation = '/confirmation';
+  static const String checkout = '/checkout';
 }

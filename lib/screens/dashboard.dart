@@ -72,7 +72,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   filled: true,
                   fillColor: Colors.grey[200],
                 ),
-               
               ),
             ),
           ),
@@ -116,7 +115,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ),
                           InkWell(
                             onTap: () {
+                              // Map<String, dynamic> map = {};
+                              // map['amount'] = "100";
+                              // map["invoice"] = "INV-123456";
                               Navigator.pushNamed(context, Routes.uploadBook);
+                              // Navigator.pushNamed(context, Routes.bkash,
+                              //     arguments: map);
                             },
                             child: Container(
                               padding: const EdgeInsets.all(12),
@@ -156,7 +160,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               const Text(
-                                "Books to Buy",
+                                "Books to Rent",
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -193,7 +197,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             ),
                             itemBuilder: (context, index) {
                               final book = provider.booksForRent.data![index];
-                              return _buildBookCard(book);
+                              return _buildBookCard(book, true);
                             },
                           ),
                           const SizedBox(height: 16),
@@ -236,7 +240,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             ),
                             itemBuilder: (context, index) {
                               final book = provider.booksForSale.data![index];
-                              return _buildBookCard(book);
+                              return _buildBookCard(book, false);
                             },
                           ),
                         ],
@@ -248,7 +252,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ));
   }
 
-  Widget _buildBookCard(BookDatum book) {
+  Widget _buildBookCard(BookDatum book, bool isFontRent) {
     return InkWell(
       onTap: () {
         Navigator.pushNamed(context, Routes.bookDetail,
@@ -300,6 +304,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     : "Sell - \$${book.price}"),
               ),
             ),
+
+            // isFontRent?
+            // Container(padding: EdgeInsets.all(8),child: Text(data),),
           ],
         ),
       ),
