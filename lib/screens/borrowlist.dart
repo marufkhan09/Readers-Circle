@@ -21,26 +21,25 @@ class _BorrowListScreenState extends State<BorrowListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final borrowList = context.watch<TrackProvider>().isBorrowlistavailable
-        ? context.watch<TrackProvider>().trackListModel?.data
-        : null;
-
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
         title: const Text('Borrowed Books'),
       ),
-      body: borrowList != null
+      body: context.watch<TrackProvider>().isBorrowlistavailable
           ? ListView.builder(
               padding: const EdgeInsets.all(10),
-              itemCount: borrowList.length,
+              itemCount:
+                  context.watch<TrackProvider>().trackListModel!.data!.length,
               itemBuilder: (context, index) {
-                final borrowItem = borrowList[index];
+                final borrowItem =
+                    context.watch<TrackProvider>().trackListModel!.data![index];
                 final book = borrowItem.book;
                 final renter = borrowItem.renterInformation;
 
                 return Card(
                   margin: const EdgeInsets.symmetric(vertical: 8.0),
-                  elevation: 2,
+                  elevation: 5,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),

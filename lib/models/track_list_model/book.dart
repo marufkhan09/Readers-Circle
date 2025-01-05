@@ -7,12 +7,12 @@ class Book {
   String? categoryName;
   bool? forRent;
   bool? availableForRent;
-  int? rentPerDay;
+  double? rentPerDay;
   bool? availableForSell;
-  int? price;
+  double? price;
   int? categoryId;
-  int? totalRentCost;
-  int? platformFee;
+  double? totalRentCost;
+  double? platformFee;
   List<Subcategory>? subcategories;
 
   Book({

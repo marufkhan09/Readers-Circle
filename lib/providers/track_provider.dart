@@ -37,7 +37,7 @@ class TrackProvider extends BaseApiService with ChangeNotifier {
   Future<TrackListModel> fetchBorrowlist() async {
     try {
       final response = await getDio()!.get(
-        "books",
+        "track-list",
       );
       TrackListModel responseJson = TrackListModel.fromJson(response.data);
       _trackListModel = responseJson;
@@ -59,7 +59,7 @@ class TrackProvider extends BaseApiService with ChangeNotifier {
           await getDio()!.get("track-list", queryParameters: {"buy": "true"});
       TrackListModel responseJson = TrackListModel.fromJson(response.data);
       _trackListModel = responseJson;
-      _isBorrowlistavailable = true;
+      _isTracklistAvailable = true;
       notifyListeners();
       return _trackListModel!;
     } on DioException catch (e) {
