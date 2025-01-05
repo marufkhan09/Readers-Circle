@@ -84,7 +84,7 @@ class BookProvider extends BaseApiService with ChangeNotifier {
   Future<BookModel> fetchBooksForSale() async {
     try {
       final response =
-          await getDio()!.get("books", queryParameters: {"for_sale": "true"});
+          await getDio()!.get("books", queryParameters: {"for_sell": "true"});
       BookModel responseJson = BookModel.fromJson(response.data);
       _booksForSale = responseJson;
       _booksForSaleLoaded = true;

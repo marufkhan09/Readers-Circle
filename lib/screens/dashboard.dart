@@ -197,7 +197,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             ),
                             itemBuilder: (context, index) {
                               final book = provider.booksForRent.data![index];
-                              return _buildBookCard(book, true);
+                              return _buildBookCard(book);
                             },
                           ),
                           const SizedBox(height: 16),
@@ -240,7 +240,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             ),
                             itemBuilder: (context, index) {
                               final book = provider.booksForSale.data![index];
-                              return _buildBookCard(book, false);
+                              return _buildBookCard(book);
                             },
                           ),
                         ],
@@ -252,7 +252,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ));
   }
 
-  Widget _buildBookCard(BookDatum book, bool isFontRent) {
+  Widget _buildBookCard(BookDatum book) {
     return InkWell(
       onTap: () {
         Navigator.pushNamed(context, Routes.bookDetail,
@@ -293,20 +293,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 style: const TextStyle(color: Colors.grey),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  // Handle buy/sell logic
-                },
-                child: Text(book.availableForSell!
-                    ? "Buy - \$${book.price}"
-                    : "Sell - \$${book.price}"),
+            Container(
+              alignment: Alignment.center,
+              width: double.infinity,
+              padding: const EdgeInsets.all(8),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(8),
+                    bottomRight: Radius.circular(8)),
+                color: CustomColors.primaryLight4,
               ),
-            ),
-
-            // isFontRent?
-            // Container(padding: EdgeInsets.all(8),child: Text(data),),
+              child: Text(
+                book.availableForSell!
+                    ? "Buy at - ৳${book.price}"
+                    : book.availableForRent! && book.forRent!
+                        ? "Rent-৳${double.parse(book.rentPerHour.toString())}/day"
+                        : "",
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            )
           ],
         ),
       ),

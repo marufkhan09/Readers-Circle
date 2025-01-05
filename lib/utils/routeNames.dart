@@ -34,6 +34,6 @@ var routes = {
             ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>,
       ),
   Routes.confirmation: (context) => const ConfirmationScreen(),
-  Routes.checkout: (context) =>
-      CheckoutPage(book: ModalRoute.of(context)!.settings.arguments as dynamic),
+  Routes.checkout: (context) => CheckoutPage(
+      args: ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>),
 };

@@ -182,7 +182,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              'Price: \$${book.data!.price}',
+              'Price: ৳${book.data!.price}',
               style: const TextStyle(
                   fontSize: 16, color: CustomColors.primaryDark),
             ),
@@ -255,8 +255,11 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
             onPressed: () {
               // Add booking logic here
               log("Available");
-              Navigator.pushNamed(context,Routes.checkout);
+              Map<String, dynamic> map = {};
+              map["book"] = book;
+              map["from"] = "rent";
               if (book.data!.availableForRent!) {
+                Navigator.pushNamed(context, Routes.checkout, arguments: map);
               } else {
                 showMessageToast(message: "Not Available for rent now!!");
               }
@@ -281,7 +284,15 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
         Expanded(
           child: ElevatedButton(
             onPressed: () {
+              Map<String, dynamic> map = {};
+              map["book"] = book;
+              map["from"] = "order";
               // Add booking logic here
+              if (book.data!.availableForSell!) {
+                Navigator.pushNamed(context, Routes.checkout, arguments: map);
+              } else {
+                showMessageToast(message: "Not Available for rent now!!");
+              }
             },
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
@@ -292,7 +303,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
               backgroundColor: CustomColors.primaryLight,
             ),
             child: const Text(
-              'Book Now',
+              'Book Order',
               style: TextStyle(color: Colors.white),
             ),
           ),

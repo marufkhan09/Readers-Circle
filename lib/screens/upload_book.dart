@@ -342,7 +342,7 @@ class _UploadBookScreenState extends State<UploadBookScreen> {
                               "for_rent": isForRent,
                               "available_for_rent": isAvailableForRent,
                               "available_to_sell": isAvailableToSell,
-                              "rent_per_hour": _rentPerDayController.text,
+                              "rent_per_day": _rentPerDayController.text,
                             };
 
                             log(bookData.toString());
