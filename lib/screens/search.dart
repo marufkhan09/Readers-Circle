@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:readers_circle/providers/book_provider.dart';
+import 'package:readers_circle/utils/routes.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -9,38 +12,74 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController _searchController = TextEditingController();
-  final List<String> _allBooks = ['Book 1', 'Book 2', 'Book 3', 'Book 4'];
-  List<String> _filteredBooks = [];
+  List<Map<String, dynamic>> _allBooks = []; // Stores books with id and title
+  List<Map<String, dynamic>> _filteredBooks = [];
   bool _isRentSelected = true;
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _filteredBooks = _allBooks;
+    _fetchBooks(); // Initial fetch for Rent books
   }
 
   void _filterBooks() {
     setState(() {
       _filteredBooks = _allBooks
-          .where((book) =>
-              book.toLowerCase().contains(_searchController.text.toLowerCase()))
+          .where((book) => book['title']
+              .toLowerCase()
+              .contains(_searchController.text.toLowerCase()))
           .toList();
     });
+  }
+
+  Future<void> _fetchBooks() async {
+    setState(() {
+      _isLoading = true;
+    });
+    final bookProvider = Provider.of<BookProvider>(context, listen: false);
+    try {
+      final books = _isRentSelected
+          ? await bookProvider.fetchBooksForRent()
+          : await bookProvider.fetchBooksForSale();
+
+      setState(() {
+        _allBooks = books.data!
+            .map((book) => {
+                  'id': book.id, // Assuming the API response has an `id` field
+                  'title': book.title ?? 'Unknown Title',
+                })
+            .toList();
+        _filteredBooks = _allBooks;
+      });
+    } catch (e) {
+      debugPrint("Error fetching books: $e");
+      setState(() {
+        _allBooks = [];
+        _filteredBooks = [];
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   void _onChipSelected(bool isRentSelected) {
     setState(() {
       _isRentSelected = isRentSelected;
       _searchController.clear();
-      _filteredBooks = _allBooks;
+      _allBooks = [];
+      _filteredBooks = [];
     });
+    _fetchBooks(); // Fetch new books based on selection
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Search Books'),
+        title: const Text('Search Books'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -48,7 +87,7 @@ class _SearchPageState extends State<SearchPage> {
           children: [
             TextField(
               controller: _searchController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Search',
                 border: OutlineInputBorder(),
               ),
@@ -56,20 +95,20 @@ class _SearchPageState extends State<SearchPage> {
                 _filterBooks();
               },
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ChoiceChip(
-                  label: Text('Rent'),
+                  label: const Text('Rent'),
                   selected: _isRentSelected,
                   onSelected: (selected) {
                     _onChipSelected(true);
                   },
                 ),
-                SizedBox(width: 8.0),
+                const SizedBox(width: 8.0),
                 ChoiceChip(
-                  label: Text('Sale'),
+                  label: const Text('Sale'),
                   selected: !_isRentSelected,
                   onSelected: (selected) {
                     _onChipSelected(false);
@@ -77,17 +116,44 @@ class _SearchPageState extends State<SearchPage> {
                 ),
               ],
             ),
-            SizedBox(height: 16.0),
-            Expanded(
-              child: ListView.builder(
-                itemCount: _filteredBooks.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(_filteredBooks[index]),
-                  );
-                },
-              ),
-            ),
+            const SizedBox(height: 16.0),
+            _isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : Expanded(
+                    child: _filteredBooks.isEmpty
+                        ? const Center(child: Text('No books found'))
+                        : ListView.builder(
+                            itemCount: _filteredBooks.length,
+                            itemBuilder: (context, index) {
+                              final book = _filteredBooks[index];
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    Routes.bookDetail,
+                                    arguments: book['id']
+                                        .toString(), // Pass the book ID
+                                  );
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.only(bottom: 10),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4),
+                                    border: Border.all(
+                                        width: 1, color: Colors.grey),
+                                  ),
+                                  child: ListTile(
+                                    title: Text(book['title']),
+                                    trailing: const Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: 15,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                  ),
           ],
         ),
       ),
