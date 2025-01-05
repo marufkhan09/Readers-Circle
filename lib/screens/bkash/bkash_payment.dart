@@ -1,6 +1,9 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:readers_circle/providers/order_provider.dart';
 import 'package:readers_circle/utils/routes.dart';
 import 'package:readers_circle/utils/toast.dart';
 
@@ -14,13 +17,14 @@ class PaymentScreen extends StatefulWidget {
 
 class _PaymentScreenState extends State<PaymentScreen> {
   final _mobileController = TextEditingController();
-
   final _formKey = GlobalKey<FormState>();
   bool paymentSuccess = false;
+  late OrderProvider orderProvider;
 
   @override
   void initState() {
     super.initState();
+    orderProvider = Provider.of<OrderProvider>(context, listen: false);
   }
 
   @override
@@ -117,16 +121,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   height: 48,
                                   child: TextFormField(
                                     controller: _mobileController,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return tr("fieldRequired");
-                                      } else if (!RegExp(
-                                              r'^(?:\+88|88)?01[3-9]\d{8}$')
-                                          .hasMatch(value)) {
-                                        return tr("invalidPhone");
-                                      }
-                                      return null;
-                                    },
+
                                     keyboardType: TextInputType.phone,
                                     textAlign: TextAlign
                                         .center, // Aligns the text in the middle
@@ -243,11 +238,53 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               Expanded(
                                   child: InkWell(
                                 onTap: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    Navigator.pushNamed(
-                                      context,
-                                      Routes.confirmation,
-                                    );
+                                  if (_mobileController.text != null &&
+                                      _mobileController.text.isNotEmpty &&
+                                      RegExp(r'^(?:\+88|88)?01[3-9]\d{8}$')
+                                          .hasMatch(_mobileController.text)) {
+                                    // Input is valid, proceed with logic
+
+                                    if (widget.data["from"] == "rent") {
+                                      log("From rent");
+                                      context
+                                          .read<OrderProvider>()
+                                          .rentCall(data: widget.data)
+                                          .then((value) {
+                                        if (value == 200 || value == 201) {
+                                          Navigator.pushReplacementNamed(
+                                              context, Routes.confirmation);
+                                        } else {
+                                          setState(() {
+                                            paymentSuccess = true;
+                                          });
+                                          showMessageToast(message: "Failed");
+                                          Navigator.pushReplacementNamed(
+                                              context, Routes.dashboard);
+                                        }
+                                      });
+                                    } else {
+                                      log("From order");
+                                      context
+                                          .read<OrderProvider>()
+                                          .buyCall(data: widget.data)
+                                          .then((value) {
+                                        if (value == 200 || value == 201) {
+                                          Navigator.pushReplacementNamed(
+                                              context, Routes.confirmation);
+                                        } else {
+                                          setState(() {
+                                            paymentSuccess = true;
+                                          });
+                                          showMessageToast(message: "Failed");
+                                          Navigator.pushReplacementNamed(
+                                              context, Routes.dashboard);
+                                        }
+                                      });
+                                    }
+                                  } else {
+                                    // Handle invalid input
+                                    showMessageToast(
+                                        message: "Invalid phone number");
                                   }
                                 },
                                 child: Container(

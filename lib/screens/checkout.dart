@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:readers_circle/models/book_detail_model/book_detail_model.dart';
 import 'package:readers_circle/utils/routes.dart';
 import 'package:readers_circle/widgets/text_field.dart';
 import 'dart:math';
@@ -21,7 +21,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   final _districtController = TextEditingController();
   final _postController = TextEditingController();
 
-  dynamic book;
+  BookDetailModel? book;
   double _pricePerDay = 100; // Example price per day
   String from = "";
 
@@ -31,9 +31,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
   @override
   void initState() {
     book = widget.args["book"];
+    dev.log(book!.data!.id.toString());
     from = widget.args["from"];
     _pricePerDay =
-        book.data!.rentPerHour!; // Assuming rentPerHour is actually rentPerDay
+        book!.data!.rentPerHour!; // Assuming rentPerHour is actually rentPerDay
     dev.log(_pricePerDay.toString());
     super.initState();
   }
@@ -47,7 +48,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
     super.dispose();
   }
 
-  void _submitForm() {
+  void _submitRentForm() {
     if (_formKey.currentState!.validate() &&
         _startDate != null &&
         _endDate != null) {
@@ -73,6 +74,38 @@ class _CheckoutPageState extends State<CheckoutPage> {
         'totalDays': days,
         'totalPrice': totalPrice,
         'invoice': invoiceNumber,
+        'bookid': book!.data!.id,
+        'from' : from
+      };
+
+      dev.log(formData.toString());
+
+      Navigator.pushNamed(context, Routes.bkash, arguments: formData);
+
+      // You can now use the formData map as needed
+    }
+  }
+
+  void _submitOrderForm() {
+    if (_formKey.currentState!.validate()) {
+      String address = _addressController.text;
+      String street = _streetController.text;
+      String district = _districtController.text;
+      String postCode = _postController.text;
+
+      // Generate a random 10-digit invoice number
+      String invoiceNumber = (Random().nextInt(900000) + 100000).toString();
+
+      // Create a map with the collected data
+      Map<String, dynamic> formData = {
+        'address[name]': address,
+        'address[street_no]': street,
+        'address[district]': district,
+        'address[post_code]': postCode,
+        'totalPrice': book!.data!.price.toString(),
+        'invoice': invoiceNumber,
+        'bookid': book!.data!.id,
+        'from' : from
       };
 
       dev.log(formData.toString());
@@ -221,7 +254,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     : const SizedBox.shrink(),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: _submitForm,
+                  onPressed:
+                      from == "rent" ? _submitRentForm : _submitOrderForm,
                   child: const Text('Proceed'),
                 ),
               ],

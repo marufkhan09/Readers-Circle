@@ -288,11 +288,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
               map["book"] = book;
               map["from"] = "order";
               // Add booking logic here
-              if (book.data!.availableForSell!) {
-                Navigator.pushNamed(context, Routes.checkout, arguments: map);
-              } else {
-                showMessageToast(message: "Not Available for rent now!!");
-              }
+              Navigator.pushNamed(context, Routes.checkout, arguments: map);
             },
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:readers_circle/providers/auth_provider.dart';
 import 'package:readers_circle/providers/book_provider.dart';
+import 'package:readers_circle/providers/order_provider.dart';
 import 'package:readers_circle/providers/preferences_provider.dart';
 import 'package:readers_circle/providers/splash_provider.dart';
 import 'package:readers_circle/utils/keys.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => AuthProvider()),
         ChangeNotifierProvider(create: (context) => PrefProvider()),
         ChangeNotifierProvider(create: (context) => BookProvider()),
+        ChangeNotifierProvider(create: (context) => OrderProvider()),
       ],
       child: MaterialApp(
         navigatorObservers: [routeObserver],
