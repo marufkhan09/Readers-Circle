@@ -8,6 +8,7 @@ import 'package:readers_circle/providers/book_provider.dart';
 import 'package:readers_circle/providers/preferences_provider.dart';
 import 'package:readers_circle/utils/colors.dart';
 import 'package:readers_circle/utils/routes.dart';
+import 'package:readers_circle/widgets/drawer.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -21,6 +22,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   late PrefProvider prefProvider;
   List<String> bookImages = ["1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg"];
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   void initState() {
     super.initState();
@@ -36,7 +38,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _scaffoldKey,
+        drawer: const CustomDrawer(),
         appBar: AppBar(
+          leading: InkWell(
+              onTap: () {
+                _scaffoldKey.currentState?.openDrawer();
+              },
+              child: const Icon(
+                Icons.menu,
+                color: Colors.white,
+              )),
           title: const Text(
             "Welcome",
             style: TextStyle(fontSize: 20),

@@ -167,13 +167,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           });
                         }
                       },
-                      child:const Text(
-                              "signIn",
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: CustomColors.white,
-                                  fontWeight: FontWeight.bold),
-                            ).tr()),
+                      child: const Text(
+                        "signIn",
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: CustomColors.white,
+                            fontWeight: FontWeight.bold),
+                      ).tr()),
                 ),
 
                 const SizedBox(

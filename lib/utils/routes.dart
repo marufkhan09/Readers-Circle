@@ -13,4 +13,6 @@ class Routes {
   static const String bkash = '/bkash';
   static const String confirmation = '/confirmation';
   static const String checkout = '/checkout';
+  static const String borrowlist = '/borrowlist';
+  static const String orderist = '/orderist';
 }

@@ -6,6 +6,7 @@ import 'package:readers_circle/providers/book_provider.dart';
 import 'package:readers_circle/providers/order_provider.dart';
 import 'package:readers_circle/providers/preferences_provider.dart';
 import 'package:readers_circle/providers/splash_provider.dart';
+import 'package:readers_circle/providers/track_provider.dart';
 import 'package:readers_circle/utils/keys.dart';
 import 'package:readers_circle/utils/route_observer.dart';
 import 'package:readers_circle/utils/routes.dart';
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => PrefProvider()),
         ChangeNotifierProvider(create: (context) => BookProvider()),
         ChangeNotifierProvider(create: (context) => OrderProvider()),
+        ChangeNotifierProvider(create: (context) => TrackProvider()),
       ],
       child: MaterialApp(
         navigatorObservers: [routeObserver],

@@ -75,7 +75,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
         'totalPrice': totalPrice,
         'invoice': invoiceNumber,
         'bookid': book!.data!.id,
-        'from' : from
+        'from': from
       };
 
       dev.log(formData.toString());
@@ -105,7 +105,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
         'totalPrice': book!.data!.price.toString(),
         'invoice': invoiceNumber,
         'bookid': book!.data!.id,
-        'from' : from
+        'from': from
       };
 
       dev.log(formData.toString());

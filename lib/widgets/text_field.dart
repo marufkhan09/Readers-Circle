@@ -23,7 +23,8 @@ class TextInput extends StatelessWidget {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
         ),
-        contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
       ),
       keyboardType: keyboardType,
       validator: validator,

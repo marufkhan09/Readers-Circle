@@ -180,13 +180,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       });
                     }
                   },
-                  child:const Text(
-                          "register",
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: CustomColors.white,
-                              fontWeight: FontWeight.bold),
-                        ).tr(),
+                  child: const Text(
+                    "register",
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: CustomColors.white,
+                        fontWeight: FontWeight.bold),
+                  ).tr(),
                 ),
               ),
               const SizedBox(height: 10),
